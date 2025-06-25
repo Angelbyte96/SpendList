@@ -1,0 +1,50 @@
+---
+import background from '@/assets/background.svg'
+import { Footer } from '@/components/Footer'
+import { Nav } from '@/components/Nav'
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro Basics</title>
+		<link rel="stylesheet" href="/src/styles/global.css" />
+		<script is:inline>
+			const storedTheme = localStorage.getItem('theme')
+			const defaultTheme = 'dark'
+			const initialTheme = storedTheme || defaultTheme
+			if (initialTheme === 'dark') {
+				document.documentElement.classList.add('dark')
+			} else {
+				document.documentElement.classList.remove('dark')
+			}
+			localStorage.setItem('theme', initialTheme)
+		</script>
+	</head>
+	<body class="grid grid-rows-[auto_1fr_auto] dark:bg-black">
+		<Nav client:load />
+		<img
+			id="background"
+			class="fixed top-0 left-0 z-[-1] h-full w-full blur-[100px]"
+			src={background.src}
+			alt=""
+			fetchpriority="high"
+		/>
+		<slot />
+		<Footer />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100dvh;
+	}
+</style>
