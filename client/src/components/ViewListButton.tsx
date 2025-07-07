@@ -7,7 +7,7 @@ interface ViewListButtonProps {
 const ViewListButton = ({ setView }: ViewListButtonProps) => {
 	return (
 		<section
-			className="flex cursor-pointer flex-col gap-2 rounded-lg border p-3 dark:bg-[#3c10297d] dark:hover:bg-[#501637]"
+			className="flex w-10/12 cursor-pointer flex-col gap-2 rounded-lg border p-3 md:w-3/12 dark:bg-[#3c10297d] dark:hover:bg-[#501637]"
 			onClick={() => setView('viewList')}
 		>
 			<div className="flex items-center gap-2">
