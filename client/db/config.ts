@@ -6,6 +6,7 @@ const List = defineTable({
 	columns: {
 		id: column.number({ primaryKey: true, autoIncrement: true }),
 		name: column.text(),
+		total: column.number({ default: 0 }),
 		createdAt: column.date({ default: NOW }),
 		updatedAt: column.date({ default: NOW }),
 	},
