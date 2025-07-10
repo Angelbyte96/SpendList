@@ -5,8 +5,25 @@ import { column, defineDb, defineTable, NOW } from 'astro:db'
 const List = defineTable({
 	columns: {
 		id: column.number({ primaryKey: true, autoIncrement: true }),
+		userId: column.number(),
 		name: column.text(),
-		total: column.number({ default: 0 }),
+		total: column.number(),
+		createdAt: column.date({ default: NOW }),
+		updatedAt: column.date({ default: NOW }),
+	},
+	foreignKeys: [
+		{
+			columns: ['userId'],
+			references: () => [User.columns.id],
+		},
+	],
+})
+
+const User = defineTable({
+	columns: {
+		id: column.number({ primaryKey: true, autoIncrement: true }),
+		email: column.text({ unique: true }),
+		listLimit: column.number({ default: 30 }),
 		createdAt: column.date({ default: NOW }),
 		updatedAt: column.date({ default: NOW }),
 	},
@@ -30,5 +47,5 @@ const Item = defineTable({
 })
 
 export default defineDb({
-	tables: { List, Item },
+	tables: { List, Item, User },
 })
