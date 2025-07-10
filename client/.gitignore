@@ -24,3 +24,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+notas.md
+
+# Test de HTTP
+*.http
