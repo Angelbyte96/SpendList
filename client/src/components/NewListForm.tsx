@@ -1,5 +1,6 @@
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
+import { calculateTotal } from '@/logic/calculateTotal'
 import { MoveLeft, Plus } from 'lucide-react'
 import { useState } from 'react'
 
@@ -40,7 +41,7 @@ const NewListForm = () => {
 		setList((prevList) => ({
 			...prevList,
 			items: [...prevList.items, newItem],
-			total: prevList.total + newItem.price,
+			total: calculateTotal([...prevList.items, newItem]),
 		}))
 
 		// Limpiar el campo del artículo actual
@@ -113,8 +114,8 @@ const NewListForm = () => {
 						</div>
 					</div>
 				</form>
-				<div className='flex flex-col gap-2'>
-					<ListArticles listArticles={list} />
+				<div className="flex flex-col gap-2">
+					<ListArticles listArticles={list} setArticles={setList} />
 				</div>
 			</main>
 			<div className="flex items-center justify-between bg-[#0f172b3d] px-4 py-2">
