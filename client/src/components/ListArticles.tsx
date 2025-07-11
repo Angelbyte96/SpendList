@@ -13,7 +13,7 @@ const ListArticles = ({ listArticles }: { listArticles: Omit<List, 'id' | 'creat
 			) : (
 				<>
 					{listArticles.items.map((item) => (
-						<article className="mx-2 flex items-center gap-2 rounded-lg border border-gray-200 p-2">
+						<article className="mx-2 flex items-center gap-2 rounded-lg border border-gray-200 p-2" key={item.id}>
 							<div className="grow">{item.name}</div>
 							<div>${item.price}</div>
 							<button className="rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">

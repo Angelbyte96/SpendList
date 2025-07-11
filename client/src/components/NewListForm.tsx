@@ -113,7 +113,7 @@ const NewListForm = () => {
 						</div>
 					</div>
 				</form>
-				<div>
+				<div className='flex flex-col gap-2'>
 					<ListArticles listArticles={list} />
 				</div>
 			</main>
