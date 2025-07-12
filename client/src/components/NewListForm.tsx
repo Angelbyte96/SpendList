@@ -1,5 +1,6 @@
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
+import { saveList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { MoveLeft, Plus } from 'lucide-react'
 import { useState } from 'react'
@@ -15,11 +16,34 @@ const NewListForm = () => {
 
 	// Función para crear una nueva lista
 	const createList = () => {
+		// Validar que la lista tenga un nombre y al menos un artículo
+		if (!list.name && list.items.length === 0) {
+			alert('Por favor, ingresa un nombre para la lista y agrega al menos un artículo.')
+			return
+		} else if (!list.name) {
+			alert('Por favor, ingresa un nombre para la lista.')
+			return
+		} else if (list.items.length === 0) {
+			alert('Por favor, agrega al menos un artículo a la lista.')
+			return
+		}
+
 		const newList: Omit<List, 'id' | 'createdAt'> = {
 			name: list.name,
 			items: list.items,
 			total: list.total,
 		}
+
+		// Guardar la lista en el almacenamiento local
+		if (saveList(newList) === null) return
+
+		alert('Lista creada exitosamente.')
+
+		// Limpiar el formulario
+		setList({ name: '', items: [], total: 0 })
+
+		// Redireccionar a demo
+		window.location.href = '/demo'
 	}
 
 	// Función para agregar un artículo a la lista
@@ -124,7 +148,10 @@ const NewListForm = () => {
 						Total: <span>${list.total}</span>
 					</p>
 				</div>
-				<button className="rounded-lg bg-green-800 px-4 py-2 text-white transition-colors hover:bg-green-900">
+				<button
+					className="rounded-lg bg-green-800 px-4 py-2 text-white transition-colors hover:bg-green-900"
+					onClick={createList}
+				>
 					Finalizar Lista
 				</button>
 			</div>
