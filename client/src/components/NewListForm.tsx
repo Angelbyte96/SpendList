@@ -35,7 +35,9 @@ const NewListForm = () => {
 		}
 
 		// Guardar la lista en el almacenamiento local
-		if (saveList(newList) === null) return
+		// if (saveList(newList) === null) return
+
+		saveList(newList)
 
 		alert('Lista creada exitosamente.')
 

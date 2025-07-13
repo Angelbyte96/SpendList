@@ -21,12 +21,12 @@ export const saveList = (list: Omit<List, 'id' | 'createdAt'>): List | null => {
 	const lists = getLists()
 
 	// Verificar si ya existe una lista con el mismo nombre
-	const existingList = lists.find((item) => item.name.toLowerCase() === list.name.toLowerCase())
+	// const existingList = lists.find((item) => item.name.toLowerCase() === list.name.toLowerCase())
 
-	if (existingList) {
-		alert('Ya existe una lista con ese nombre. Por favor, elige otro nombre.')
-		return null
-	}
+	// if (existingList) {
+	// 	alert('Ya existe una lista con ese nombre. Por favor, elige otro nombre.')
+	// 	return null
+	// }
 
 	const newList: List = {
 		...list,
