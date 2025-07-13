@@ -13,6 +13,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vercel": "^8.2.1",
+    "@formkit/tempo": "^0.1.2",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

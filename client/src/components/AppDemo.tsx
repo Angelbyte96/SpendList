@@ -3,6 +3,7 @@ import { ViewListButton } from '@/components/ViewListButton'
 import { ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import { NewListForm } from './NewListForm'
+import { ViewList } from './ViewList'
 
 const AppDemo = () => {
 	const [view, setView] = useState('home')
@@ -11,7 +12,7 @@ const AppDemo = () => {
 		<main className="flex flex-col items-center justify-center gap-4 dark:text-white">
 			<section className="flex min-h-full w-full flex-col items-center justify-center gap-2">
 				{view === 'newList' && <NewListForm />}
-				{view === 'viewList' && <p>Hola Mundo desde viewList!!</p>}
+				{view === 'viewList' && <ViewList />}
 				{view === 'home' && (
 					<>
 						<article className="flex flex-col items-center justify-center">
