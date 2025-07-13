@@ -2,6 +2,7 @@ import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
 import { saveList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
+import { formatPrice } from '@/utils/formatPrice'
 import { MoveLeft, Plus } from 'lucide-react'
 import { useState } from 'react'
 
@@ -147,7 +148,7 @@ const NewListForm = () => {
 			<div className="flex items-center justify-between bg-[#0f172b3d] px-4 py-2">
 				<div>
 					<p>
-						Total: <span>${list.total}</span>
+						Total: <span>${formatPrice(list.total)}</span>
 					</p>
 				</div>
 				<button

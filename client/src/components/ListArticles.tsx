@@ -1,5 +1,6 @@
 import type { List } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
+import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
 
 const ListArticles = ({
@@ -34,7 +35,7 @@ const ListArticles = ({
 							key={item.id}
 						>
 							<div className="grow">{item.name}</div>
-							<div>${item.price}</div>
+							<div>${formatPrice(item.price)}</div>
 							<button className="rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939] cursor-pointer">
 								<SquarePen size={16} />
 							</button>

@@ -1,4 +1,5 @@
 import { getLists, type List } from '@/lib/localStorageService'
+import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
 import { Calendar, SquarePen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -26,7 +27,7 @@ const ViewList = () => {
 								className="flex flex-col gap-2 rounded-lg border border-gray-200 p-4"
 								key={list.id}
 							>
-								<div className='flex items-center justify-between'>
+								<div className="flex items-center justify-between">
 									<h2 className="uppercase">{list.name}</h2>
 									<div>
 										<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
@@ -52,14 +53,14 @@ const ViewList = () => {
 									{list.items.map((item) => (
 										<div key={item.id} className="flex items-center justify-between">
 											<span>{item.name}</span>
-											<span>${item.price}</span>
+											<span>${formatPrice(item.price)}</span>
 										</div>
 									))}
 								</div>
 								<hr className="my-4 border-gray-300" />
 								<div className="flex items-center justify-between">
 									<span>Total:</span>
-									<span>${list.total}</span>
+									<span>${formatPrice(list.total)}</span>
 								</div>
 							</li>
 						)
