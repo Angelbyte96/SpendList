@@ -10,7 +10,6 @@ const ViewList = () => {
 	useEffect(() => {
 		setLists(getLists())
 	}, [])
-	console.log(lists)
 
 	return (
 		<section className="min-h-full w-full p-1">
