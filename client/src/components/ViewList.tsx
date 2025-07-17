@@ -1,4 +1,4 @@
-import { getLists, type List } from '@/lib/localStorageService'
+import { deleteList, getLists, type List } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
 import { Calendar, SquarePen, Trash2 } from 'lucide-react'
@@ -32,7 +32,10 @@ const ViewList = () => {
 										<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
 											<SquarePen size={16} />
 										</button>
-										<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+										<button
+											className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
+											onClick={() => deleteList(list.id) && setLists(getLists())}
+										>
 											<Trash2 size={16} className="text-red-500" />
 										</button>
 									</div>
