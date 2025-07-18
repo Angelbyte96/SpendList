@@ -1,7 +1,7 @@
 import { deleteList, getLists, type List } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
-import { Calendar, SquarePen, Trash2 } from 'lucide-react'
+import { Calendar, ChevronDown, ChevronUp, SquarePen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface ViewListProps {
@@ -10,6 +10,8 @@ interface ViewListProps {
 
 const ViewList = ({ onEditingListId }: ViewListProps) => {
 	const [lists, setLists] = useState<List[]>([])
+	const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
+
 	function sortedLists() {
 		return getLists().sort(
 			(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -21,6 +23,19 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 		setLists(sortedLists)
 	}, [])
 
+	// Función para alternar la expansión de una lista
+	const toggleExpanded = (listId: string) => {
+		setExpandedLists((prev) => {
+			const newSet = new Set(prev)
+			if (newSet.has(listId)) {
+				newSet.delete(listId)
+			} else {
+				newSet.add(listId)
+			}
+			return newSet
+		})
+	}
+
 	return (
 		<section className="flex min-h-full w-full flex-col p-1">
 			{lists.length === 0 ? (
@@ -30,6 +45,10 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 					{lists.map((list) => {
 						const numItems = list.items.length
 						const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
+						const isExpanded = expandedLists.has(list.id)
+						const shouldShowExpand = numItems > 3
+						const itemsToShow =
+							shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : list.items
 
 						return (
 							<li
@@ -65,12 +84,30 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 									</span>
 								</div>
 								<div className="flex flex-col gap-2">
-									{list.items.map((item) => (
+									{itemsToShow.map((item) => (
 										<div key={item.id} className="flex items-center justify-between">
 											<span>{item.name}</span>
 											<span>${formatPrice(item.price)}</span>
 										</div>
 									))}
+									{shouldShowExpand && (
+										<button
+											onClick={() => toggleExpanded(list.id)}
+											className="flex items-center justify-center gap-2 rounded-md border border-gray-300 p-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800"
+										>
+											{isExpanded ? (
+												<>
+													<span>Ver menos</span>
+													<ChevronUp size={16} />
+												</>
+											) : (
+												<>
+													<span>Ver más</span>
+													<ChevronDown size={16} />
+												</>
+											)}
+										</button>
+									)}
 								</div>
 								<hr className="my-4 border-gray-300" />
 								<div className="flex items-center justify-between">
