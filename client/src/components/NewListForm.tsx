@@ -94,6 +94,12 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Limpiar el campo del artículo actual
 		setCurrentItem({ id: '', name: '', price: 0 })
+
+		// Reiniciar el focus en el campo de nombre del artículo
+		const nameInput: HTMLInputElement = document.getElementById('nameArticle') as HTMLInputElement
+		if (nameInput) {
+			nameInput.focus()
+		}
 	}
 
 	return (

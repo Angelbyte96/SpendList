@@ -10,11 +10,13 @@ interface ViewListProps {
 
 const ViewList = ({ onEditingListId }: ViewListProps) => {
 	const [lists, setLists] = useState<List[]>([])
-
-	useEffect(() => {
-		const sortedLists = getLists().sort(
+	function sortedLists() {
+		return getLists().sort(
 			(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 		)
+	}
+	useEffect(() => {
+		sortedLists()
 
 		setLists(sortedLists)
 	}, [])
@@ -45,7 +47,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 										</button>
 										<button
 											className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
-											onClick={() => deleteList(list.id) && setLists(getLists())}
+											onClick={() => deleteList(list.id) && setLists(getLists() && sortedLists())}
 										>
 											<Trash2 size={16} className="text-red-500" />
 										</button>
