@@ -16,9 +16,9 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	}, [])
 
 	return (
-		<section className="min-h-full w-full p-1">
+		<section className="flex min-h-full w-full flex-col p-1">
 			{lists.length === 0 ? (
-				<p>No hay listas que mostrar.</p>
+				<h1 className="text-center my-auto">No hay listas que mostrar.</h1>
 			) : (
 				<ul className="mx-auto flex w-11/12 flex-col gap-4">
 					{lists.map((list) => {
