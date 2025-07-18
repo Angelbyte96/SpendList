@@ -12,13 +12,17 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	const [lists, setLists] = useState<List[]>([])
 
 	useEffect(() => {
-		setLists(getLists())
+		const sortedLists = getLists().sort(
+			(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+		)
+
+		setLists(sortedLists)
 	}, [])
 
 	return (
 		<section className="flex min-h-full w-full flex-col p-1">
 			{lists.length === 0 ? (
-				<h1 className="text-center my-auto">No hay listas que mostrar.</h1>
+				<h1 className="my-auto text-center">No hay listas que mostrar.</h1>
 			) : (
 				<ul className="mx-auto flex w-11/12 flex-col gap-4">
 					{lists.map((list) => {
