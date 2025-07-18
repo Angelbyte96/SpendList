@@ -12,7 +12,7 @@ const ListArticles = ({
 }) => {
 	const deleteItem = (id: string) => {
 		setArticles((prevList) => {
-			const updateItems = prevList.items.filter(item => item.id !== id)
+			const updateItems = prevList.items.filter((item) => item.id !== id)
 			return {
 				...prevList,
 				items: updateItems,
@@ -29,24 +29,27 @@ const ListArticles = ({
 				</div>
 			) : (
 				<>
-					{listArticles.items.map((item) => (
-						<article
-							className="mx-2 flex items-center gap-2 rounded-lg border border-gray-200 p-2"
-							key={item.id}
-						>
-							<div className="grow">{item.name}</div>
-							<div>${formatPrice(item.price)}</div>
-							<button className="rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939] cursor-pointer">
-								<SquarePen size={16} />
-							</button>
-							<button
-								className="rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939] cursor-pointer"
-								onClick={() => deleteItem(item.id)}
+					{listArticles.items
+						.sort((a, b) => b.id.localeCompare(a.id))
+
+						.map((item) => (
+							<article
+								className="mx-2 flex items-center gap-2 rounded-lg border border-gray-200 p-2"
+								key={item.id}
 							>
-								<Trash2 size={16} className="text-red-500" />
-							</button>
-						</article>
-					))}
+								<div className="grow">{item.name}</div>
+								<div>${formatPrice(item.price)}</div>
+								<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+									<SquarePen size={16} />
+								</button>
+								<button
+									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
+									onClick={() => deleteItem(item.id)}
+								>
+									<Trash2 size={16} className="text-red-500" />
+								</button>
+							</article>
+						))}
 				</>
 			)}
 		</>
