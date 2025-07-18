@@ -1,12 +1,29 @@
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
-import { saveList } from '@/lib/localStorageService'
+import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { MoveLeft, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const NewListForm = () => {
+interface NewListFormProps {
+	editingListId?: string | null
+}
+
+const NewListForm = ({ editingListId }: NewListFormProps) => {
+	useEffect(() => {
+		if (editingListId) {
+			const existingList = getList(editingListId)
+			if (existingList) {
+				setList({
+					name: existingList.name,
+					items: existingList.items,
+					total: existingList.total,
+				})
+			}
+		}
+	}, [editingListId])
+
 	const [list, setList] = useState<Omit<List, 'id' | 'createdAt'>>({
 		name: '',
 		items: [],
@@ -38,9 +55,13 @@ const NewListForm = () => {
 		// Guardar la lista en el almacenamiento local
 		// if (saveList(newList) === null) return
 
-		saveList(newList)
-
-		alert('Lista creada exitosamente.')
+		if (editingListId) {
+			updateList(editingListId, newList)
+			alert('Lista editada exitosamente.')
+		} else {
+			saveList(newList)
+			alert('Lista creada exitosamente.')
+		}
 
 		// Limpiar el formulario
 		setList({ name: '', items: [], total: 0 })
@@ -85,7 +106,11 @@ const NewListForm = () => {
 					<MoveLeft />
 					<span>Volver</span>
 				</a>
-				<h2 className="text-xl font-bold md:text-2xl">Nueva Lista</h2>
+				{editingListId ? (
+					<h2 className="text-xl font-bold md:text-2xl">Editar Lista</h2>
+				) : (
+					<h2 className="text-xl font-bold md:text-2xl">Nueva Lista</h2>
+				)}
 			</header>
 			<main className="flex flex-col gap-4">
 				<form action="">

@@ -4,7 +4,11 @@ import { format } from '@formkit/tempo'
 import { Calendar, SquarePen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-const ViewList = () => {
+interface ViewListProps {
+	onEditingListId: (listId: string) => void
+}
+
+const ViewList = ({ onEditingListId }: ViewListProps) => {
 	const [lists, setLists] = useState<List[]>([])
 
 	useEffect(() => {
@@ -29,7 +33,10 @@ const ViewList = () => {
 								<div className="flex items-center justify-between">
 									<h2 className="uppercase">{list.name}</h2>
 									<div>
-										<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+										<button
+											className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
+											onClick={() => onEditingListId(list.id)}
+										>
 											<SquarePen size={16} />
 										</button>
 										<button
