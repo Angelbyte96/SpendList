@@ -80,16 +80,16 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Crear un nuevo artículo con un ID único
 		const newItem: Item = {
-			id: crypto.randomUUID(),
+			id: Date.now().toString(), // ✅ Timestamp numérico como string
 			name: currentItem.name,
 			price: currentItem.price,
 		}
 
-		// Agregar el nuevo artículo a la lista
+		// ✅ Agregar al principio
 		setList((prevList) => ({
 			...prevList,
-			items: [...prevList.items, newItem],
-			total: calculateTotal([...prevList.items, newItem]),
+			items: [newItem, ...prevList.items],
+			total: calculateTotal([newItem, ...prevList.items]),
 		}))
 
 		// Limpiar el campo del artículo actual

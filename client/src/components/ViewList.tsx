@@ -49,8 +49,9 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 							const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
 							const isExpanded = expandedLists.has(list.id)
 							const shouldShowExpand = numItems > 3
+							const sortedItems = list.items.sort((a, b) => b.id.localeCompare(a.id))
 							const itemsToShow =
-								shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : list.items
+								shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : sortedItems
 
 							return (
 								<li
