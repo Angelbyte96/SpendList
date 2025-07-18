@@ -29,3 +29,6 @@ notas.md
 
 # Test de HTTP
 *.http
+
+# Vercel
+.vercel/
