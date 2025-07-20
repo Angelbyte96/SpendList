@@ -11,7 +11,7 @@ const Footer = () => {
 					</span>{' '}
 					<span className="absolute m-[-1px] h-[1px] w-[1px] overflow-hidden border-0 p-0 whitespace-nowrap">
 						amor
-					</span>
+					</span>{' '}
 					por Angelbyte
 				</p>
 			</div>
