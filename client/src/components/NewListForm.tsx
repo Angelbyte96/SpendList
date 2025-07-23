@@ -3,7 +3,7 @@ import type { Item, List } from '@/lib/localStorageService'
 import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
-import { MoveLeft, Plus } from 'lucide-react'
+import { Ban, Check, MoveLeft, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface NewListFormProps {
@@ -31,6 +31,49 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	})
 
 	const [currentItem, setCurrentItem] = useState<Item>({ id: '', name: '', price: 0 })
+	const [editingItem, setEditingItem] = useState<Item | null>(null)
+
+	const handleEditItem = (item: Item) => {
+		setEditingItem(item)
+		setCurrentItem(item)
+	}
+
+	const updateItem = () => {
+		if (!editingItem) return
+
+		// Validaciones
+		if (!currentItem.name || currentItem.price <= 0) {
+			alert('Por favor, ingresa un nombre y un precio válido para el artículo.')
+			return
+		}
+
+		setList((prevList) => ({
+			...prevList,
+			items: prevList.items.map((item) =>
+				item.id === editingItem.id
+					? { ...item, name: currentItem.name, price: currentItem.price }
+					: item,
+			),
+			total: calculateTotal(
+				prevList.items.map((item) =>
+					item.id === editingItem.id
+						? { ...item, name: currentItem.name, price: currentItem.price }
+						: item,
+				),
+			),
+		}))
+
+		alert(`"${currentItem.name}" actualizado exitosamente.`)
+
+		// Limpiar el estado de edición
+		setEditingItem(null)
+		setCurrentItem({ id: '', name: '', price: 0 })
+	}
+
+	const cancelEdit = () => {
+		setEditingItem(null)
+		setCurrentItem({ id: '', name: '', price: 0 })
+	}
 
 	// Función para crear una nueva lista
 	const createList = () => {
@@ -118,7 +161,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 					<h2 className="text-xl font-bold md:text-2xl">Nueva Lista</h2>
 				)}
 			</header>
-			<main className="flex flex-col gap-4">
+			<main className="flex flex-col gap-4 overflow-y-auto p-4">
 				<form action="">
 					<div className="m-2 flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
 						<label htmlFor="nameList" className="font-semibold">
@@ -161,19 +204,38 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									})
 								}
 							/>
-							<button
-								className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-800 px-3 py-1.5 text-white transition-colors hover:bg-blue-900 sm:w-auto"
-								type="button"
-								onClick={addItem}
-							>
-								<Plus size={18} />
-								<span>Agregar</span>
-							</button>
+							<div className="flex w-full justify-end gap-2 md:w-auto md:flex-row">
+								{editingItem ? (
+									<>
+										<button
+											className="w-fit rounded-xl bg-green-700 px-3 py-1 text-white hover:bg-green-800"
+											onClick={updateItem}
+										>
+											<Check />
+										</button>
+										<button
+											className="w-fit rounded-xl bg-red-900 px-3 py-1 text-white hover:bg-red-950"
+											onClick={cancelEdit}
+										>
+											<Ban />
+										</button>
+									</>
+								) : (
+									<button
+										className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-800 px-3 py-1.5 text-white transition-colors hover:bg-blue-900 sm:w-auto"
+										type="button"
+										onClick={addItem}
+									>
+										<Plus size={18} />
+										<span>Agregar</span>
+									</button>
+								)}
+							</div>
 						</div>
 					</div>
 				</form>
 				<div className="flex flex-col gap-2">
-					<ListArticles listArticles={list} setArticles={setList} />
+					<ListArticles listArticles={list} setArticles={setList} onEditItem={handleEditItem} />
 				</div>
 			</main>
 			<div className="flex items-center justify-between bg-[#0f172b3d] px-4 py-2">

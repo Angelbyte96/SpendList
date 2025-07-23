@@ -1,4 +1,4 @@
-import type { List } from '@/lib/localStorageService'
+import type { Item, List } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
@@ -6,9 +6,11 @@ import { SquarePen, Trash2 } from 'lucide-react'
 const ListArticles = ({
 	listArticles,
 	setArticles,
+	onEditItem,
 }: {
 	listArticles: Omit<List, 'id' | 'createdAt'>
 	setArticles: React.Dispatch<React.SetStateAction<Omit<List, 'id' | 'createdAt'>>>
+	onEditItem?: (item: Item) => void
 }) => {
 	const deleteItem = (id: string) => {
 		setArticles((prevList) => {
@@ -39,7 +41,10 @@ const ListArticles = ({
 							>
 								<div className="grow">{item.name}</div>
 								<div>${formatPrice(item.price)}</div>
-								<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+								<button
+									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
+									onClick={() => onEditItem?.(item)}
+								>
 									<SquarePen size={16} />
 								</button>
 								<button
