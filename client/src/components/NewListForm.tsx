@@ -238,14 +238,14 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 					<ListArticles listArticles={list} setArticles={setList} onEditItem={handleEditItem} />
 				</div>
 			</main>
-			<div className="flex items-center justify-between bg-[#0f172b3d] px-4 py-2">
+			<div className="flex items-center justify-between bg-[#151c301d] px-4 py-2 dark:bg-[#0f172b3d]">
 				<div>
 					<p>
 						Total: <span>${formatPrice(list.total)}</span>
 					</p>
 				</div>
 				<button
-					className="rounded-lg bg-green-800 px-4 py-2 text-white transition-colors hover:bg-green-900"
+					className="cursor-pointer rounded-lg bg-green-800 px-4 py-2 text-white transition-colors hover:bg-green-900"
 					onClick={createList}
 				>
 					Finalizar Lista

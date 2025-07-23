@@ -36,7 +36,7 @@ const ListArticles = ({
 
 						.map((item) => (
 							<article
-								className="mx-2 flex items-center gap-2 rounded-lg border border-gray-200 p-2"
+								className="mx-2 flex items-center gap-2 rounded-lg border border-gray-400 p-2 dark:border-gray-200"
 								key={item.id}
 							>
 								<div className="grow">{item.name}</div>
@@ -45,13 +45,13 @@ const ListArticles = ({
 									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
 									onClick={() => onEditItem?.(item)}
 								>
-									<SquarePen size={16} />
+									<SquarePen size={16} className="text-black dark:text-white" />
 								</button>
 								<button
 									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
 									onClick={() => deleteItem(item.id)}
 								>
-									<Trash2 size={16} className="text-red-500" />
+									<Trash2 size={16} className="text-red-600 dark:text-red-500" />
 								</button>
 							</article>
 						))}
