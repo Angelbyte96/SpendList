@@ -70,7 +70,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 									key={list.id}
 								>
 									<div className="flex items-center justify-between">
-										<h2 className="uppercase">{list.name}</h2>
+										<h2 className="font-semibold uppercase">{list.name}</h2>
 										<div>
 											<button
 												className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
