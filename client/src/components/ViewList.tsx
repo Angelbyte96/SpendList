@@ -37,13 +37,13 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	}
 
 	return (
-		<section className="flex min-h-full w-full flex-col p-1">
+		<section className="mt-5 flex min-h-full w-full flex-col p-1">
 			{lists.length === 0 ? (
 				<div className="flex min-h-full flex-col items-center justify-center gap-4">
 					<h1 className="text-xl md:text-3xl">No hay listas que mostrar.</h1>
 					<a
 						href="/demo"
-						className="inline-flex text-base md:text-lg transform items-center gap-2 rounded-xl border border-purple-200 bg-purple-100 px-6 py-3 font-medium text-purple-700 transition-all duration-300 hover:scale-105 hover:border-purple-300 hover:bg-purple-200 hover:text-purple-800 active:scale-95 dark:border-purple-700 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:border-purple-600 dark:hover:bg-purple-800/40 dark:hover:text-purple-200"
+						className="inline-flex transform items-center gap-2 rounded-xl border border-purple-200 bg-purple-100 px-6 py-3 text-base font-medium text-purple-700 transition-all duration-300 hover:scale-105 hover:border-purple-300 hover:bg-purple-200 hover:text-purple-800 active:scale-95 md:text-lg dark:border-purple-700 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:border-purple-600 dark:hover:bg-purple-800/40 dark:hover:text-purple-200"
 					>
 						<span>
 							<ArrowLeft />
@@ -87,13 +87,13 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 										</div>
 									</div>
 									<div className="flex items-center gap-4">
-										<div className="flex gap-1 text-gray-400">
+										<div className="flex gap-1 text-gray-500">
 											<span className="flex items-center">
 												<Calendar size={16} />
 											</span>
 											<span>{formattedDate}</span>
 										</div>
-										<span className="rounded-lg border p-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
+										<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
 											{numItems === 1 ? `${numItems} articulo` : `${numItems} articulos`}
 										</span>
 									</div>
