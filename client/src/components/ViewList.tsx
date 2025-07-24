@@ -1,7 +1,7 @@
 import { deleteList, getLists, type List } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
-import { Calendar, ChevronDown, ChevronUp, SquarePen, Trash2 } from 'lucide-react'
+import { Calendar, ChevronDown, ChevronUp, MoveLeft, SquarePen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface ViewListProps {
@@ -39,7 +39,18 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	return (
 		<section className="flex min-h-full w-full flex-col p-1">
 			{lists.length === 0 ? (
-				<h1 className="my-auto text-center">No hay listas que mostrar.</h1>
+				<div className="flex min-h-full flex-col items-center justify-center gap-4">
+					<h1 className="text-xl md:text-3xl">No hay listas que mostrar.</h1>
+					<a
+						href="/demo"
+						className="flex gap-2 rounded-lg border bg-slate-300 px-2 py-2 hover:bg-slate-200 dark:text-white "
+					>
+						<span>
+							<MoveLeft />
+						</span>
+						<span>Volver</span>
+					</a>
+				</div>
 			) : (
 				<ul className="mx-auto flex w-11/12 flex-col gap-4">
 					{lists
