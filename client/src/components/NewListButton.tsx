@@ -7,7 +7,7 @@ interface NewListButtonProps {
 const NewListButton = ({ setView }: NewListButtonProps) => {
 	return (
 		<section
-			className="flex w-10/12 cursor-pointer flex-col gap-2 rounded-lg border p-2 md:w-3/12 dark:bg-[#3c10297d] dark:hover:bg-[#501637]"
+			className="flex w-10/12 transform cursor-pointer flex-col gap-2 rounded-lg bg-gradient-to-r from-purple-700 to-pink-700 px-3 py-2 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-purple-500 hover:to-pink-500 hover:shadow-xl active:scale-95 md:w-3/12 dark:from-purple-800 dark:to-purple-900 dark:hover:from-purple-600 dark:hover:to-purple-700"
 			onClick={() => setView('newList')}
 		>
 			<div className="flex items-center gap-2">
