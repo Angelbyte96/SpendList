@@ -66,7 +66,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 
 							return (
 								<li
-									className="flex flex-col gap-2 rounded-lg border border-gray-200 p-4"
+									className="flex flex-col gap-2 rounded-lg border border-gray-300 p-4"
 									key={list.id}
 								>
 									<div className="flex items-center justify-between">
