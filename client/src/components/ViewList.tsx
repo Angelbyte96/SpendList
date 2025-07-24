@@ -1,7 +1,7 @@
 import { deleteList, getLists, type List } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
-import { Calendar, ChevronDown, ChevronUp, MoveLeft, SquarePen, Trash2 } from 'lucide-react'
+import { ArrowLeft, Calendar, ChevronDown, ChevronUp, SquarePen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface ViewListProps {
@@ -43,10 +43,10 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 					<h1 className="text-xl md:text-3xl">No hay listas que mostrar.</h1>
 					<a
 						href="/demo"
-						className="flex gap-2 rounded-lg border bg-slate-300 px-2 py-2 hover:bg-slate-200 dark:text-white "
+						className="inline-flex text-base md:text-lg transform items-center gap-2 rounded-xl border border-purple-200 bg-purple-100 px-6 py-3 font-medium text-purple-700 transition-all duration-300 hover:scale-105 hover:border-purple-300 hover:bg-purple-200 hover:text-purple-800 active:scale-95 dark:border-purple-700 dark:bg-purple-900/30 dark:text-purple-300 dark:hover:border-purple-600 dark:hover:bg-purple-800/40 dark:hover:text-purple-200"
 					>
 						<span>
-							<MoveLeft />
+							<ArrowLeft />
 						</span>
 						<span>Volver</span>
 					</a>
