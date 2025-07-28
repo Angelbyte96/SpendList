@@ -38,33 +38,33 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	}
 
 	return (
-		<section className="mt-5 flex min-h-full w-full flex-col p-1">
+		<section className="mt-5 flex min-h-full w-11/12 flex-col gap-4 p-1">
 			{lists.length === 0 ? (
 				<div className="flex min-h-full flex-col items-center justify-center gap-4">
 					<h1 className="text-xl md:text-3xl">No hay listas que mostrar.</h1>
 					<ButtonBack url="/demo" />
 				</div>
 			) : (
-				<ul className="mx-auto flex w-11/12 flex-col gap-4">
-					{lists
-						.sort((a, b) => b.id.localeCompare(a.id))
-						.map((list) => {
-							const numItems = list.items.length
-							const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
-							const isExpanded = expandedLists.has(list.id)
-							const shouldShowExpand = numItems > 3
-							const sortedItems = list.items.sort((a, b) => b.id.localeCompare(a.id))
-							const itemsToShow =
-								shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : sortedItems
+				<main className="flex w-full flex-col gap-4">
+					<div className="flex items-center gap-4 md:gap-4">
+						<ButtonBack url="/demo" />
+						<h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+							Listas de compras
+						</h1>
+					</div>
+					<ul className="flex w-full flex-col gap-4">
+						{lists
+							.sort((a, b) => b.id.localeCompare(a.id))
+							.map((list) => {
+								const numItems = list.items.length
+								const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
+								const isExpanded = expandedLists.has(list.id)
+								const shouldShowExpand = numItems > 3
+								const sortedItems = list.items.sort((a, b) => b.id.localeCompare(a.id))
+								const itemsToShow =
+									shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : sortedItems
 
-							return (
-								<>
-									<div className="flex items-center gap-4 md:gap-4">
-										<ButtonBack url="/demo" />
-										<h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-											Listas de compras
-										</h1>
-									</div>
+								return (
 									<li
 										className="flex flex-col gap-2 rounded-lg border border-gray-300 p-4"
 										key={list.id}
@@ -131,10 +131,10 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 											<span>${formatPrice(list.total)}</span>
 										</div>
 									</li>
-								</>
-							)
-						})}
-				</ul>
+								)
+							})}
+					</ul>
+				</main>
 			)}
 		</section>
 	)
