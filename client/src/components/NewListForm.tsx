@@ -3,8 +3,9 @@ import type { Item, List } from '@/lib/localStorageService'
 import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
-import { Ban, Check, MoveLeft, Plus } from 'lucide-react'
+import { Ban, Check, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { ButtonBack } from './ButtonBack'
 
 interface NewListFormProps {
 	editingListId?: string | null
@@ -147,14 +148,8 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 	return (
 		<section className="grid min-h-full w-full grid-rows-[auto_1fr_auto] md:gap-8">
-			<header className="m-2 flex items-center justify-start gap-4">
-				<a
-					href="/demo"
-					className="flex items-center gap-2 rounded-md border p-1 transition-colors hover:bg-gray-200 md:p-2 dark:hover:bg-gray-700"
-				>
-					<MoveLeft />
-					<span>Volver</span>
-				</a>
+			<header className="mx-4 my-2 flex items-center justify-start gap-4">
+				<ButtonBack url="/demo" />
 				{editingListId ? (
 					<h2 className="text-xl font-bold md:text-2xl">Editar Lista</h2>
 				) : (
@@ -162,8 +157,8 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 				)}
 			</header>
 			<main className="flex flex-col gap-4 overflow-y-auto p-4">
-				<form action="">
-					<div className="m-2 flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
+				<form action="" className="flex flex-col gap-4">
+					<div className="flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
 						<label htmlFor="nameList" className="font-semibold">
 							{list.name ? 'Editar Lista' : 'Nombre de la Lista'}
 						</label>
@@ -177,7 +172,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							onChange={(e) => setList({ ...list, name: e.target.value })}
 						/>
 					</div>
-					<div className="m-2 flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
+					<div className="flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
 						<label htmlFor="nameArticle" className="font-semibold">
 							Agregar Articulo
 						</label>
