@@ -55,7 +55,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Validaciones
 		if (!currentItem.name || currentItem.price <= 0) {
-			ShowToast('Por favor, ingresa un nombre y un precio válido para el artículo.')
+			ShowToast('⚠️ Por favor, ingresa un nombre y un precio válido para el artículo.')
 			return
 		}
 
@@ -75,7 +75,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			),
 		}))
 
-		ShowToast(`"${currentItem.name}" actualizado exitosamente.`)
+		ShowToast(`✅ "${currentItem.name}" actualizado exitosamente.`)
 
 		// Limpiar el estado de edición
 		setEditingItem(null)
@@ -91,13 +91,13 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const createList = () => {
 		// Validar que la lista tenga un nombre y al menos un artículo
 		if (!list.name && list.items.length === 0) {
-			ShowToast('Por favor, ingresa un nombre para la lista y agrega al menos un artículo.')
+			ShowToast('❌ Por favor, ingresa un nombre para la lista y agrega al menos un artículo.')
 			return
 		} else if (!list.name) {
-			ShowToast('Por favor, ingresa un nombre para la lista.')
+			ShowToast('📝 Por favor, ingresa un nombre para la lista.')
 			return
 		} else if (list.items.length === 0) {
-			ShowToast('Por favor, agrega al menos un artículo a la lista.')
+			ShowToast('📋 Por favor, agrega al menos un artículo a la lista.')
 			return
 		}
 
@@ -112,10 +112,10 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		if (editingListId) {
 			updateList(editingListId, newList)
-			ShowToast('Lista editada exitosamente.')
+			ShowToast('🎉 Lista editada exitosamente.')
 		} else {
 			saveList(newList)
-			ShowToast('Lista creada exitosamente.')
+			ShowToast('🎉 Lista creada exitosamente.')
 		}
 
 		// Limpiar el formulario
@@ -131,7 +131,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const addItem = () => {
 		// Validar que el nombre y el precio del artículo sean válidos
 		if (!currentItem.name || currentItem.price <= 0) {
-			ShowToast('Por favor, ingresa un nombre y un precio válido para el artículo.')
+			ShowToast('⚠️ Por favor, ingresa un nombre y un precio válido para el artículo.')
 			return
 		}
 
