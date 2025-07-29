@@ -1,25 +1,13 @@
 import { NewListButton } from '@/components/NewListButton'
 import { ViewListButton } from '@/components/ViewListButton'
+import { useAppNavigation } from '@/hooks/useAppNavigation'
 import { ShoppingCart } from 'lucide-react'
-import { useState } from 'react'
 import { NewListForm } from './NewListForm'
 import { ViewList } from './ViewList'
 
-type AppView = 'home' | 'newList' | 'viewList' | 'editList'
-
 const AppDemo = () => {
-	const [view, setView] = useState<AppView>('home')
-	const [editingListId, setEditingListId] = useState<string | null>(null)
-
-	// Función para manejar el cambio de vista
-	const handleSetView = (newView: string) => {
-		setView(newView as AppView)
-	}
-
-	const handleEditList = (listId: string) => {
-		setEditingListId(listId)
-		setView('editList')
-	}
+	const { view, editingListId, handleEditList, navigateToNewList, navigateToViewList } =
+		useAppNavigation()
 
 	return (
 		<main className="flex flex-col items-center justify-center gap-4 dark:text-white">
@@ -34,8 +22,8 @@ const AppDemo = () => {
 							<h1 className="text-center text-5xl">Lista de compras</h1>
 							<p className="text-2xl">Gestiona tu lista de compras</p>
 						</article>
-						<NewListButton setView={handleSetView} />
-						<ViewListButton setView={handleSetView} />
+						<NewListButton onNavigate={navigateToNewList} />
+						<ViewListButton onNavigate={navigateToViewList} />
 					</>
 				)}
 			</section>
