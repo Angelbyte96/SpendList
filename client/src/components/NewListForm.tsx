@@ -12,16 +12,26 @@ interface NewListFormProps {
 }
 
 const NewListForm = ({ editingListId }: NewListFormProps) => {
+	const [loading, setLoading] = useState<boolean>(true)
+
 	useEffect(() => {
-		if (editingListId) {
-			const existingList = getList(editingListId)
-			if (existingList) {
-				setList({
-					name: existingList.name,
-					items: existingList.items,
-					total: existingList.total,
-				})
+		setLoading(true)
+
+		try {
+			if (editingListId) {
+				const existingList = getList(editingListId)
+				if (existingList) {
+					setList({
+						name: existingList.name,
+						items: existingList.items,
+						total: existingList.total,
+					})
+				}
 			}
+		} catch (error) {
+			console.error('Error al cargar la lista:', error)
+		} finally {
+			setLoading(false)
 		}
 	}, [editingListId])
 
@@ -229,8 +239,25 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 						</div>
 					</div>
 				</form>
-				<div className="flex flex-col gap-2">
-					<ListArticles listArticles={list} setArticles={setList} onEditItem={handleEditItem} />
+				<div className="mt-1 flex flex-col gap-2">
+					{editingListId ? (
+						<>
+							{loading ? (
+								<div className="flex min-h-full flex-col items-center justify-center gap-4">
+									<div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
+									<h1 className="text-xl md:text-3xl">Cargando items...</h1>
+								</div>
+							) : (
+								<ListArticles
+									listArticles={list}
+									setArticles={setList}
+									onEditItem={handleEditItem}
+								/>
+							)}
+						</>
+					) : (
+						<ListArticles listArticles={list} setArticles={setList} onEditItem={handleEditItem} />
+					)}
 				</div>
 			</main>
 			<div className="flex items-center justify-between bg-[#151c301d] px-4 py-2 dark:bg-[#0f172b3d]">
