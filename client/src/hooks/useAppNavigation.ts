@@ -1,27 +1,12 @@
-import { useState } from 'react'
-
 const useAppNavigation = () => {
-	type AppView = 'home' | 'newList' | 'viewList' | 'editList'
-
-	const [view, setView] = useState<AppView>('home')
-	const [editingListId, setEditingListId] = useState<string | null>(null)
-
-	const navigateToHome = () => setView('home')
-	const navigateToNewList = () => setView('newList')
-	const navigateToViewList = () => setView('viewList')
-
-	const handleEditList = (listId: string) => {
-		setEditingListId(listId)
-		setView('editList')
-	}
+	const navigateToHome = () => (window.location.href = `/demo`)
+	const navigateToNewList = () => (window.location.href = `/demo/nueva-lista`)
+	const navigateToViewList = () => (window.location.href = `/demo/mis-listas`)
 
 	return {
-		view,
-		editingListId,
 		navigateToHome,
 		navigateToNewList,
 		navigateToViewList,
-		handleEditList,
 	}
 }
 

@@ -38,7 +38,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	}
 
 	return (
-		<section className="mt-5 flex min-h-full w-11/12 flex-col gap-4 p-1">
+		<section className="mt-5 flex mx-auto min-h-full w-11/12 flex-col gap-4 p-1 dark:text-white">
 			{lists.length === 0 ? (
 				<div className="flex min-h-full flex-col items-center justify-center gap-4">
 					<h1 className="text-xl md:text-3xl">No hay listas que mostrar.</h1>

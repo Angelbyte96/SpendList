@@ -1,0 +1,10 @@
+---
+import { NewListForm } from '@/components/NewListForm'
+import Layout from '@/layouts/Layout.astro'
+
+const { id } = Astro.params
+---
+
+<Layout title="Editar Lista">
+	<NewListForm editingListId={id} client:load />
+</Layout>

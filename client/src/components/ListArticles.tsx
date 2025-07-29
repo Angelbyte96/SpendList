@@ -36,7 +36,7 @@ const ListArticles = ({
 
 						.map((item) => (
 							<article
-								className="mx-2 flex items-center gap-2 rounded-lg border border-gray-400 p-2 dark:border-gray-200"
+								className="flex items-center gap-2 rounded-lg border border-gray-400 p-2 dark:border-gray-200"
 								key={item.id}
 							>
 								<div className="grow">{item.name}</div>
