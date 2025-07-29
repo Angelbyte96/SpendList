@@ -3,6 +3,7 @@ import type { Item, List } from '@/lib/localStorageService'
 import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
+import { ShowToast } from '@/utils/ShowToast'
 import { Ban, Check, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
@@ -54,7 +55,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Validaciones
 		if (!currentItem.name || currentItem.price <= 0) {
-			alert('Por favor, ingresa un nombre y un precio válido para el artículo.')
+			ShowToast('Por favor, ingresa un nombre y un precio válido para el artículo.')
 			return
 		}
 
@@ -74,7 +75,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			),
 		}))
 
-		alert(`"${currentItem.name}" actualizado exitosamente.`)
+		ShowToast(`"${currentItem.name}" actualizado exitosamente.`)
 
 		// Limpiar el estado de edición
 		setEditingItem(null)
@@ -90,13 +91,13 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const createList = () => {
 		// Validar que la lista tenga un nombre y al menos un artículo
 		if (!list.name && list.items.length === 0) {
-			alert('Por favor, ingresa un nombre para la lista y agrega al menos un artículo.')
+			ShowToast('Por favor, ingresa un nombre para la lista y agrega al menos un artículo.')
 			return
 		} else if (!list.name) {
-			alert('Por favor, ingresa un nombre para la lista.')
+			ShowToast('Por favor, ingresa un nombre para la lista.')
 			return
 		} else if (list.items.length === 0) {
-			alert('Por favor, agrega al menos un artículo a la lista.')
+			ShowToast('Por favor, agrega al menos un artículo a la lista.')
 			return
 		}
 
@@ -111,24 +112,26 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		if (editingListId) {
 			updateList(editingListId, newList)
-			alert('Lista editada exitosamente.')
+			ShowToast('Lista editada exitosamente.')
 		} else {
 			saveList(newList)
-			alert('Lista creada exitosamente.')
+			ShowToast('Lista creada exitosamente.')
 		}
 
 		// Limpiar el formulario
 		setList({ name: '', items: [], total: 0 })
 
 		// Redireccionar a demo
-		window.location.href = '/demo'
+		setTimeout(() => {
+			window.location.href = '/demo'
+		}, 2000)
 	}
 
 	// Función para agregar un artículo a la lista
 	const addItem = () => {
 		// Validar que el nombre y el precio del artículo sean válidos
 		if (!currentItem.name || currentItem.price <= 0) {
-			alert('Por favor, ingresa un nombre y un precio válido para el artículo.')
+			ShowToast('Por favor, ingresa un nombre y un precio válido para el artículo.')
 			return
 		}
 
