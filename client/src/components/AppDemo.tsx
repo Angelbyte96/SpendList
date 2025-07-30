@@ -4,8 +4,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation'
 import { ShoppingCart } from 'lucide-react'
 
 const AppDemo = () => {
-	const { navigateToNewList, navigateToViewList } =
-		useAppNavigation()
+	const { navigateToNewList, navigateToViewList } = useAppNavigation()
 
 	return (
 		<main className="flex flex-col items-center justify-center gap-4 dark:text-white">

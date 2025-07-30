@@ -1,4 +1,5 @@
 import { ButtonBack } from '@/components/ButtonBack'
+import { ModalRadix } from '@/components/DialogTemplate'
 import { deleteList, getLists, type List } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
@@ -13,6 +14,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 	const [lists, setLists] = useState<List[]>([])
 	const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
 	const [loading, setLoading] = useState<boolean>(true)
+	const [isOpen, setIsOpen] = useState(false)
 
 	function sortedLists() {
 		return getLists().sort(
@@ -90,14 +92,36 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 													>
 														<SquarePen size={16} />
 													</button>
-													<button
-														className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
-														onClick={() =>
-															deleteList(list.id) && setLists(getLists() && sortedLists())
+													<ModalRadix
+														title="¿Estas seguro?"
+														description="Esta acción no se puede deshacer."
+														isOpen={isOpen}
+														trigger={
+															<button className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+																<Trash2 size={16} className="text-red-500" />
+															</button>
 														}
+														onOpenChange={setIsOpen}
 													>
-														<Trash2 size={16} className="text-red-500" />
-													</button>
+														<div className="flex items-center justify-center gap-8 py-2">
+															<button
+																className="focus:ring-opacity-30 cursor-pointer self-end rounded-lg bg-slate-500 px-2.5 py-[0.2rem] text-sm font-semibold text-white transition hover:scale-105 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+																onClick={() => setIsOpen(false)}
+															>
+																❌ Cancelar
+															</button>
+															<button
+																onClick={() =>
+																	deleteList(list.id) &&
+																	setLists(getLists() && sortedLists()) &&
+																	setIsOpen(false)
+																}
+																className="focus:ring-opacity-30 cursor-pointer self-end rounded-lg bg-red-700 px-2.5 py-[0.2rem] text-sm font-semibold text-white transition hover:scale-105 focus:ring-2 focus:ring-blue-200 focus:outline-none"
+															>
+																🗑️ Eliminar
+															</button>
+														</div>
+													</ModalRadix>
 												</div>
 											</div>
 											<div className="flex items-center gap-4">
