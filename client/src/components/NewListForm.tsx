@@ -1,10 +1,10 @@
+import { AddNewArticle } from '@/components/AddNewArticle'
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
 import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { ShowToast } from '@/utils/ShowToast'
-import { Ban, Check, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
 
@@ -159,6 +159,12 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		}
 	}
 
+	const logicAddNewArticle = {
+		cancelEdit,
+		addItem,
+		updateItem,
+	}
+
 	return (
 		<section className="grid min-h-full w-full grid-rows-[auto_1fr_auto] md:gap-8 dark:text-white">
 			<header className="mx-4 my-2 flex items-center justify-start gap-4">
@@ -185,62 +191,12 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							onChange={(e) => setList({ ...list, name: e.target.value })}
 						/>
 					</div>
-					<div className="flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
-						<label htmlFor="nameArticle" className="font-semibold">
-							Agregar Articulo
-						</label>
-						<div className="flex w-full flex-col items-start gap-3 sm:flex-row sm:items-center">
-							<input
-								type="text"
-								name="nameArticle"
-								id="nameArticle"
-								placeholder="Nombre del articulo"
-								className="w-full rounded-lg border p-1.5 sm:flex-grow"
-								value={currentItem.name}
-								onChange={(e) => setCurrentItem({ ...currentItem, name: e.target.value })}
-							/>
-							<input
-								type="number"
-								name="price"
-								placeholder="Precio"
-								className="w-full rounded-xl border p-1.5 sm:w-24"
-								value={currentItem.price || ''}
-								onChange={(e) =>
-									setCurrentItem({
-										...currentItem,
-										price: e.target.value ? parseFloat(e.target.value) : 0,
-									})
-								}
-							/>
-							<div className="flex w-full justify-end gap-2 md:w-auto md:flex-row">
-								{editingItem ? (
-									<>
-										<button
-											className="w-fit rounded-xl bg-green-700 px-3 py-1 text-white hover:bg-green-800"
-											onClick={updateItem}
-										>
-											<Check />
-										</button>
-										<button
-											className="w-fit rounded-xl bg-red-900 px-3 py-1 text-white hover:bg-red-950"
-											onClick={cancelEdit}
-										>
-											<Ban />
-										</button>
-									</>
-								) : (
-									<button
-										className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-800 px-3 py-1.5 text-white transition-colors hover:bg-blue-900 sm:w-auto"
-										type="button"
-										onClick={addItem}
-									>
-										<Plus size={18} />
-										<span>Agregar</span>
-									</button>
-								)}
-							</div>
-						</div>
-					</div>
+					<AddNewArticle
+						currentItem={currentItem}
+						setCurrentItem={setCurrentItem}
+						editingItem={editingItem}
+						logicAddNewArticle={logicAddNewArticle}
+					/>
 				</form>
 				<div className="mt-1 flex flex-col gap-2">
 					{editingListId ? (
