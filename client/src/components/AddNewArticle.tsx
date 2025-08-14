@@ -22,10 +22,7 @@ const AddNewArticle = ({
 	const { addItem, cancelEdit, updateItem } = logicAddNewArticle
 
 	return (
-		<div className="flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
-			<label htmlFor="nameArticle" className="font-semibold">
-				Agregar Articulo
-			</label>
+		<div className="flex flex-col gap-1 rounded-xl p-2 md:gap-2 md:p-4">
 			<div className="flex w-full flex-col items-start gap-3 sm:flex-row sm:items-center">
 				<input
 					type="text"
