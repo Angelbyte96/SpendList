@@ -1,4 +1,4 @@
-import { ArticleForm } from '@/components/ArticleForm'
+import { AddArticleForm } from '@/components/AddArticleForm'
 import { ModalRadix } from '@/components/DialogTemplate'
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
@@ -225,11 +225,10 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 						title="Agregar articulo"
 						size="md"
 					>
-						<ArticleForm
+						<AddArticleForm
 							currentItem={currentItem}
 							setCurrentItem={setCurrentItem}
-							editingItem={null}
-							logicAddNewArticle={logicAddNewArticle}
+							onAdd={logicAddNewArticle.addItem}
 						/>
 					</ModalRadix>
 				</form>

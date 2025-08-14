@@ -4,8 +4,8 @@ import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
-import { ArticleForm } from './ArticleForm'
 import { ModalRadix } from './DialogTemplate'
+import { EditArticleForm } from './EditArticleForm'
 
 interface ListArticlesProps {
 	listArticles: Omit<List, 'id' | 'createdAt'>
@@ -83,20 +83,12 @@ const ListArticles = ({ listArticles, setArticles, editLogic }: ListArticlesProp
 									title={`Editar "${item.name}"`}
 									size="md"
 								>
-									<ArticleForm
+									<EditArticleForm
 										currentItem={editCurrentItem}
 										setCurrentItem={setEditCurrentItem}
-										editingItem={item}
-										logicAddNewArticle={{
-											...logicEditArticle,
-											cancelEdit: () => {
-												logicEditArticle.cancelEdit()
-												closeEditModal() // ✅ Cerrar modal al cancelar
-											},
-											updateItem: () => {
-												logicEditArticle.updateItem()
-												closeEditModal() // ✅ Cerrar modal al actualizar
-											},
+										onSave={() => {
+											logicEditArticle.updateItem()
+											closeEditModal() // ✅ Cerrar modal al actualizar
 										}}
 									/>
 								</ModalRadix>

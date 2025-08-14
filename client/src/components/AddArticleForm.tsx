@@ -1,26 +1,18 @@
 import type { Item } from '@/lib/localStorageService'
-import { Ban, Check, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
-interface ArticleFormProps {
-	logicAddNewArticle: {
-		cancelEdit: () => void
-		addItem: () => void
-		updateItem: () => void
-	}
+interface AddArticleFormProps {
 	currentItem: Item
 	setCurrentItem: Dispatch<SetStateAction<Item>>
-	editingItem: Item | null
+	onAdd: () => void
 }
 
-const ArticleForm = ({
+const AddArticleForm = ({
 	currentItem,
 	setCurrentItem,
-	editingItem,
-	logicAddNewArticle,
-}: ArticleFormProps) => {
-	const { addItem, cancelEdit, updateItem } = logicAddNewArticle
-
+	onAdd,
+}: AddArticleFormProps) => {
 	return (
 		<div className="flex flex-col gap-1 rounded-xl p-2 md:gap-2 md:p-4">
 			<div className="flex w-full flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -47,35 +39,18 @@ const ArticleForm = ({
 					}
 				/>
 				<div className="flex w-full justify-end gap-2 md:w-auto md:flex-row">
-					{editingItem ? (
-						<>
-							<button
-								className="w-fit rounded-xl bg-green-700 px-3 py-1 text-white hover:bg-green-800"
-								onClick={updateItem}
-							>
-								<Check />
-							</button>
-							<button
-								className="w-fit rounded-xl bg-red-900 px-3 py-1 text-white hover:bg-red-950"
-								onClick={cancelEdit}
-							>
-								<Ban />
-							</button>
-						</>
-					) : (
-						<button
-							className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-800 px-3 py-1.5 text-white transition-colors hover:bg-blue-900 sm:w-auto"
-							type="button"
-							onClick={addItem}
-						>
-							<Plus size={18} />
-							<span>Agregar</span>
-						</button>
-					)}
+					<button
+						className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-800 px-3 py-1.5 text-white transition-colors hover:bg-blue-900 sm:w-auto"
+						type="button"
+						onClick={onAdd}
+					>
+						<Plus size={18} />
+						<span>Agregar</span>
+					</button>
 				</div>
 			</div>
 		</div>
 	)
 }
 
-export { ArticleForm }
+export { AddArticleForm }
