@@ -1,10 +1,12 @@
 import { AddNewArticle } from '@/components/AddNewArticle'
+import { ModalRadix } from '@/components/DialogTemplate'
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
 import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { ShowToast } from '@/utils/ShowToast'
+import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
 
@@ -191,12 +193,23 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							onChange={(e) => setList({ ...list, name: e.target.value })}
 						/>
 					</div>
-					<AddNewArticle
-						currentItem={currentItem}
-						setCurrentItem={setCurrentItem}
-						editingItem={editingItem}
-						logicAddNewArticle={logicAddNewArticle}
-					/>
+					<ModalRadix
+						trigger={
+							<button className="flex transform cursor-pointer items-center gap-2 self-end rounded-xl border border-blue-200/50 bg-blue-100 px-4 py-2 font-medium text-blue-800 transition-all duration-300 hover:scale-105 hover:border-blue-300/70 hover:bg-blue-200 hover:text-blue-900 active:scale-95 dark:border-blue-700/50 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:border-blue-600/70 dark:hover:bg-blue-800/50 dark:hover:text-blue-100">
+								<Plus size={18} />
+								<span>Nuevo</span>
+							</button>
+						}
+						title="Agregar articulo"
+						size='md'
+					>
+						<AddNewArticle
+							currentItem={currentItem}
+							setCurrentItem={setCurrentItem}
+							editingItem={editingItem}
+							logicAddNewArticle={logicAddNewArticle}
+						/>
+					</ModalRadix>
 				</form>
 				<div className="mt-1 flex flex-col gap-2">
 					{editingListId ? (
