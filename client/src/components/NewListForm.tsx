@@ -6,7 +6,7 @@ import { getList, saveList, updateList } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { ShowToast } from '@/utils/ShowToast'
-import { Plus } from 'lucide-react'
+import { Edit3, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
 
@@ -165,14 +165,14 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			setIsAddModalOpen(false) // ✅ Cerrar modal al cancelar
 		},
 		addItem,
-		updateItem: () => {} // No usado en modal nuevo
+		updateItem: () => {}, // No usado en modal nuevo
 	}
 
 	// Lógica para modal "Editar"
 	const logicEditArticle = {
 		cancelEdit,
 		addItem: () => {}, // No usado en modal editar
-		updateItem
+		updateItem,
 	}
 
 	// Objeto con toda la lógica de edición
@@ -195,27 +195,30 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 				)}
 			</header>
 			<main className="flex flex-col gap-4 overflow-y-auto p-4">
-				<form action="" className="flex flex-col gap-4">
-					<div className="flex flex-col gap-1 rounded-xl border p-2 md:gap-2 md:p-4">
-						<label htmlFor="nameList" className="font-semibold">
-							{list.name ? 'Editar Lista' : 'Nombre de la Lista'}
-						</label>
+				<form
+					action=""
+					className="flex items-center justify-center gap-4 rounded-xl border bg-white/30 px-2 backdrop-blur border-gray-200/50 dark:border-gray-700/50 dark:bg-gray-900/60 shadow-sm dark:shadow-none transition-colors"
+				>
+					<div className="flex flex-1 items-center gap-1 rounded-xl p-2 md:gap-2 md:p-4">
 						<input
 							type="text"
 							name="nameList"
 							id="nameList"
-							placeholder="Ej. Compras del fin de semana"
-							className="rounded-lg border p-1.5"
+							placeholder="Nombre de la lista"
+							className="flex-1 rounded-lg border border-gray-400/50 p-1.5"
 							value={list.name}
 							onChange={(e) => setList({ ...list, name: e.target.value })}
 						/>
+						<button className="hidden cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
+							<Edit3 className="m-1 h-4 w-4" />
+						</button>
 					</div>
 					<ModalRadix
 						isOpen={isAddModalOpen}
 						onOpenChange={setIsAddModalOpen}
 						trigger={
-							<button 
-								className="flex transform cursor-pointer items-center gap-2 self-end rounded-xl border border-blue-200/50 bg-blue-100 px-4 py-2 font-medium text-blue-800 transition-all duration-300 hover:scale-105 hover:border-blue-300/70 hover:bg-blue-200 hover:text-blue-900 active:scale-95 dark:border-blue-700/50 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:border-blue-600/70 dark:hover:bg-blue-800/50 dark:hover:text-blue-100"
+							<button
+								className="flex transform cursor-pointer items-center gap-2 rounded-xl border border-blue-200/50 bg-blue-100 px-4 py-2 font-medium text-blue-800 transition-all duration-300 hover:scale-105 hover:border-blue-300/70 hover:bg-blue-200 hover:text-blue-900 active:scale-95 dark:border-blue-700/50 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:border-blue-600/70 dark:hover:bg-blue-800/50 dark:hover:text-blue-100"
 								onClick={() => setIsAddModalOpen(true)}
 							>
 								<Plus size={18} />
