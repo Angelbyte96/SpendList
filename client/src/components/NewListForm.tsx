@@ -197,7 +197,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			<main className="flex flex-col gap-4 overflow-y-auto p-4">
 				<form
 					action=""
-					className="flex items-center justify-center gap-4 rounded-xl border bg-white/30 px-2 backdrop-blur border-gray-200/50 dark:border-gray-700/50 dark:bg-gray-900/60 shadow-sm dark:shadow-none transition-colors"
+					className="flex items-center justify-center gap-4 rounded-xl border border-gray-200/50 bg-white/30 px-2 shadow-sm backdrop-blur transition-colors dark:border-gray-700/50 dark:bg-gray-900/60 dark:shadow-none"
 				>
 					<div className="flex flex-1 items-center gap-1 rounded-xl p-2 md:gap-2 md:p-4">
 						<input
@@ -205,7 +205,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							name="nameList"
 							id="nameList"
 							placeholder="Nombre de la lista"
-							className="flex-1 rounded-lg border border-gray-400/50 p-1.5"
+							className="flex-1 rounded-lg border border-gray-400/50 p-1.5 placeholder:text-black/40 dark:placeholder:text-white/40"
 							value={list.name}
 							onChange={(e) => setList({ ...list, name: e.target.value })}
 						/>
