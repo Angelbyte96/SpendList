@@ -2,16 +2,15 @@ import type { Item, List } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
+import type { Dispatch, SetStateAction } from 'react'
 
-const ListArticles = ({
-	listArticles,
-	setArticles,
-	onEditItem,
-}: {
+interface ListArticlesProps {
 	listArticles: Omit<List, 'id' | 'createdAt'>
-	setArticles: React.Dispatch<React.SetStateAction<Omit<List, 'id' | 'createdAt'>>>
+	setArticles: Dispatch<SetStateAction<Omit<List, 'id' | 'createdAt'>>>
 	onEditItem?: (item: Item) => void
-}) => {
+}
+
+const ListArticles = ({ listArticles, setArticles, onEditItem }: ListArticlesProps) => {
 	const deleteItem = (id: string) => {
 		setArticles((prevList) => {
 			const updateItems = prevList.items.filter((item) => item.id !== id)
