@@ -1,4 +1,4 @@
-import { AddNewArticle } from '@/components/AddNewArticle'
+import { ArticleForm } from '@/components/ArticleForm'
 import { ModalRadix } from '@/components/DialogTemplate'
 import { ListArticles } from '@/components/ListArticles'
 import type { Item, List } from '@/lib/localStorageService'
@@ -44,19 +44,19 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		total: 0,
 	})
 
+	// Estados para modal "Nuevo"
 	const [currentItem, setCurrentItem] = useState<Item>({ id: '', name: '', price: 0 })
-	const [editingItem, setEditingItem] = useState<Item | null>(null)
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
-	const handleEditItem = (item: Item) => {
-		setEditingItem(item)
-		setCurrentItem(item)
-	}
+	// Estados para modal "Editar"
+	const [editCurrentItem, setEditCurrentItem] = useState<Item>({ id: '', name: '', price: 0 })
+	const [editingItem, setEditingItem] = useState<Item | null>(null)
 
 	const updateItem = () => {
 		if (!editingItem) return
 
 		// Validaciones
-		if (!currentItem.name || currentItem.price <= 0) {
+		if (!editCurrentItem.name || editCurrentItem.price <= 0) {
 			ShowToast('⚠️ Por favor, ingresa un nombre y un precio válido para el artículo.')
 			return
 		}
@@ -65,28 +65,28 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			...prevList,
 			items: prevList.items.map((item) =>
 				item.id === editingItem.id
-					? { ...item, name: currentItem.name, price: currentItem.price }
+					? { ...item, name: editCurrentItem.name, price: editCurrentItem.price }
 					: item,
 			),
 			total: calculateTotal(
 				prevList.items.map((item) =>
 					item.id === editingItem.id
-						? { ...item, name: currentItem.name, price: currentItem.price }
+						? { ...item, name: editCurrentItem.name, price: editCurrentItem.price }
 						: item,
 				),
 			),
 		}))
 
-		ShowToast(`✅ "${currentItem.name}" actualizado exitosamente.`)
+		ShowToast(`✅ "${editCurrentItem.name}" actualizado exitosamente.`)
 
 		// Limpiar el estado de edición
 		setEditingItem(null)
-		setCurrentItem({ id: '', name: '', price: 0 })
+		setEditCurrentItem({ id: '', name: '', price: 0 })
 	}
 
 	const cancelEdit = () => {
 		setEditingItem(null)
-		setCurrentItem({ id: '', name: '', price: 0 })
+		setEditCurrentItem({ id: '', name: '', price: 0 })
 	}
 
 	// Función para crear una nueva lista
@@ -153,18 +153,35 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Limpiar el campo del artículo actual
 		setCurrentItem({ id: '', name: '', price: 0 })
+		setIsAddModalOpen(false) // ✅ Cerrar modal después de agregar
 
-		// Reiniciar el focus en el campo de nombre del artículo
-		const nameInput: HTMLInputElement = document.getElementById('nameArticle') as HTMLInputElement
-		if (nameInput) {
-			nameInput.focus()
-		}
+		ShowToast(`✅ "${newItem.name}" agregado exitosamente.`)
 	}
 
+	// Lógica para modal "Nuevo"
 	const logicAddNewArticle = {
-		cancelEdit,
+		cancelEdit: () => {
+			setCurrentItem({ id: '', name: '', price: 0 })
+			setIsAddModalOpen(false) // ✅ Cerrar modal al cancelar
+		},
 		addItem,
-		updateItem,
+		updateItem: () => {} // No usado en modal nuevo
+	}
+
+	// Lógica para modal "Editar"
+	const logicEditArticle = {
+		cancelEdit,
+		addItem: () => {}, // No usado en modal editar
+		updateItem
+	}
+
+	// Objeto con toda la lógica de edición
+	const editLogic = {
+		editCurrentItem,
+		setEditCurrentItem,
+		editingItem,
+		setEditingItem,
+		logicEditArticle,
 	}
 
 	return (
@@ -194,19 +211,24 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 						/>
 					</div>
 					<ModalRadix
+						isOpen={isAddModalOpen}
+						onOpenChange={setIsAddModalOpen}
 						trigger={
-							<button className="flex transform cursor-pointer items-center gap-2 self-end rounded-xl border border-blue-200/50 bg-blue-100 px-4 py-2 font-medium text-blue-800 transition-all duration-300 hover:scale-105 hover:border-blue-300/70 hover:bg-blue-200 hover:text-blue-900 active:scale-95 dark:border-blue-700/50 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:border-blue-600/70 dark:hover:bg-blue-800/50 dark:hover:text-blue-100">
+							<button 
+								className="flex transform cursor-pointer items-center gap-2 self-end rounded-xl border border-blue-200/50 bg-blue-100 px-4 py-2 font-medium text-blue-800 transition-all duration-300 hover:scale-105 hover:border-blue-300/70 hover:bg-blue-200 hover:text-blue-900 active:scale-95 dark:border-blue-700/50 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:border-blue-600/70 dark:hover:bg-blue-800/50 dark:hover:text-blue-100"
+								onClick={() => setIsAddModalOpen(true)}
+							>
 								<Plus size={18} />
 								<span>Nuevo</span>
 							</button>
 						}
 						title="Agregar articulo"
-						size='md'
+						size="md"
 					>
-						<AddNewArticle
+						<ArticleForm
 							currentItem={currentItem}
 							setCurrentItem={setCurrentItem}
-							editingItem={editingItem}
+							editingItem={null}
 							logicAddNewArticle={logicAddNewArticle}
 						/>
 					</ModalRadix>
@@ -220,15 +242,11 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									<h1 className="text-xl md:text-3xl">Cargando items...</h1>
 								</div>
 							) : (
-								<ListArticles
-									listArticles={list}
-									setArticles={setList}
-									onEditItem={handleEditItem}
-								/>
+								<ListArticles listArticles={list} setArticles={setList} editLogic={editLogic} />
 							)}
 						</>
 					) : (
-						<ListArticles listArticles={list} setArticles={setList} onEditItem={handleEditItem} />
+						<ListArticles listArticles={list} setArticles={setList} editLogic={editLogic} />
 					)}
 				</div>
 			</main>

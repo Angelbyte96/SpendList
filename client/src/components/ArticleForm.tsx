@@ -2,7 +2,7 @@ import type { Item } from '@/lib/localStorageService'
 import { Ban, Check, Plus } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
-interface AddNewArticleProps {
+interface ArticleFormProps {
 	logicAddNewArticle: {
 		cancelEdit: () => void
 		addItem: () => void
@@ -13,12 +13,12 @@ interface AddNewArticleProps {
 	editingItem: Item | null
 }
 
-const AddNewArticle = ({
+const ArticleForm = ({
 	currentItem,
 	setCurrentItem,
 	editingItem,
 	logicAddNewArticle,
-}: AddNewArticleProps) => {
+}: ArticleFormProps) => {
 	const { addItem, cancelEdit, updateItem } = logicAddNewArticle
 
 	return (
@@ -78,5 +78,4 @@ const AddNewArticle = ({
 	)
 }
 
-export { AddNewArticle }
-
+export { ArticleForm }

@@ -3,14 +3,41 @@ import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
+import { ArticleForm } from './ArticleForm'
+import { ModalRadix } from './DialogTemplate'
 
 interface ListArticlesProps {
 	listArticles: Omit<List, 'id' | 'createdAt'>
 	setArticles: Dispatch<SetStateAction<Omit<List, 'id' | 'createdAt'>>>
-	onEditItem?: (item: Item) => void
+	editLogic: {
+		editCurrentItem: Item
+		setEditCurrentItem: Dispatch<SetStateAction<Item>>
+		editingItem: Item | null
+		setEditingItem: Dispatch<SetStateAction<Item | null>>
+		logicEditArticle: {
+			cancelEdit: () => void
+			addItem: () => void
+			updateItem: () => void
+		}
+	}
 }
 
-const ListArticles = ({ listArticles, setArticles, onEditItem }: ListArticlesProps) => {
+const ListArticles = ({ listArticles, setArticles, editLogic }: ListArticlesProps) => {
+	const { editCurrentItem, setEditCurrentItem, setEditingItem, logicEditArticle } = editLogic
+	const [editModalOpen, setEditModalOpen] = useState<string | null>(null)
+
+	const handleEditClick = (item: Item) => {
+		setEditCurrentItem(item)
+		setEditModalOpen(item.id)
+		// ✅ También actualizar editingItem en el componente padre
+		setEditingItem(item)
+	}
+
+	// Función para cerrar modal de edición
+	const closeEditModal = () => {
+		setEditModalOpen(null)
+	}
 	const deleteItem = (id: string) => {
 		setArticles((prevList) => {
 			const updateItems = prevList.items.filter((item) => item.id !== id)
@@ -40,12 +67,40 @@ const ListArticles = ({ listArticles, setArticles, onEditItem }: ListArticlesPro
 							>
 								<div className="grow">{item.name}</div>
 								<div>${formatPrice(item.price)}</div>
-								<button
-									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
-									onClick={() => onEditItem?.(item)}
+
+								{/* Modal para editar cada item */}
+								<ModalRadix
+									isOpen={editModalOpen === item.id}
+									onOpenChange={(open) => setEditModalOpen(open ? item.id : null)}
+									trigger={
+										<button
+											className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
+											onClick={() => handleEditClick(item)}
+										>
+											<SquarePen size={16} className="text-black dark:text-white" />
+										</button>
+									}
+									title={`Editar "${item.name}"`}
+									size="md"
 								>
-									<SquarePen size={16} className="text-black dark:text-white" />
-								</button>
+									<ArticleForm
+										currentItem={editCurrentItem}
+										setCurrentItem={setEditCurrentItem}
+										editingItem={item}
+										logicAddNewArticle={{
+											...logicEditArticle,
+											cancelEdit: () => {
+												logicEditArticle.cancelEdit()
+												closeEditModal() // ✅ Cerrar modal al cancelar
+											},
+											updateItem: () => {
+												logicEditArticle.updateItem()
+												closeEditModal() // ✅ Cerrar modal al actualizar
+											},
+										}}
+									/>
+								</ModalRadix>
+
 								<button
 									className="cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]"
 									onClick={() => deleteItem(item.id)}
