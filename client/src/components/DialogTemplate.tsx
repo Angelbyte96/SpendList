@@ -53,7 +53,7 @@ const ModalRadix = ({
 			<Dialog.Portal>
 				<Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
 				<Dialog.Content
-					className={`fixed top-1/2 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-lg bg-white/95 p-4 text-center text-black shadow-lg dark:bg-gray-900/75 backdrop-blur-xl dark:text-white ${getSizeClasses()}`}
+					className={`fixed top-1/4 left-1/2 z-50 flex -translate-x-1/2 -translate-y-1/4 flex-col gap-4 rounded-lg bg-white/95 p-4 text-center text-black shadow-lg dark:bg-gray-900/75 backdrop-blur-xl dark:text-white ${getSizeClasses()}`}
 				>
 					<Dialog.DialogTitle className="font-bold">{title}</Dialog.DialogTitle>
 					<Dialog.DialogDescription className="">{description}</Dialog.DialogDescription>
