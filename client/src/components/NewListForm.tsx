@@ -187,11 +187,16 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	return (
 		<section className="grid min-h-full w-full grid-rows-[auto_1fr_auto] md:gap-8 dark:text-white">
 			<header className="mx-4 my-2 flex items-center justify-start gap-4">
-				<ButtonBack url="/demo" />
 				{editingListId ? (
-					<h2 className="text-xl font-bold md:text-2xl">Editar Lista</h2>
+					<>
+						<ButtonBack url="/demo/mis-listas" />
+						<h2 className="text-xl font-bold md:text-2xl">Editar Lista</h2>
+					</>
 				) : (
-					<h2 className="text-xl font-bold md:text-2xl">Nueva Lista</h2>
+					<>
+						<ButtonBack url="/demo" />
+						<h2 className="text-xl font-bold md:text-2xl">Nueva Lista</h2>
+					</>
 				)}
 			</header>
 			<main className="flex flex-col gap-4 overflow-y-auto p-4">
