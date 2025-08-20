@@ -76,7 +76,7 @@ const ListArticles = ({
 								<select
 									name="quantity"
 									id="quantity"
-									className="rounded-md border dark:border-gray-600 dark:text-white"
+									className="rounded-md border dark:border-gray-600 dark:text-white [&>option]:text-center"
 									value={item.quantity}
 									onChange={(e) => {
 										const value = parseInt(e.target.value)
