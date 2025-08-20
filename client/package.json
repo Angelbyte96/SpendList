@@ -16,6 +16,7 @@
     "@formkit/tempo": "^0.1.2",
     "@pheralb/toast": "^1.0.0",
     "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-select": "^2.2.6",
     "@tailwindcss/vite": "^4.1.11",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
