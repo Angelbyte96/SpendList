@@ -1,3 +1,4 @@
+import { SelectRadix } from '@/components/SelectRadix'
 import type { Item, List } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
@@ -73,26 +74,10 @@ const ListArticles = ({
 							>
 								<div className="grow">{item.name}</div>
 								<div>${formatPrice(item.price * item.quantity)}</div>
-								<select
-									name="quantity"
-									id="quantity"
-									className="rounded-md border dark:border-gray-600 dark:text-white"
+								<SelectRadix 
 									value={item.quantity}
-									onChange={(e) => {
-										const value = parseInt(e.target.value)
-										updateQuantity(item.id, value)
-									}}
-								>
-									{[...Array(20)].map((_, i) => (
-										<option
-											key={i + 1}
-											value={i + 1}
-											className="rounded border p-1 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-										>
-											{i + 1}
-										</option>
-									))}
-								</select>
+									onValueChange={(value) => updateQuantity(item.id, value)}
+								/>
 								{/* Modal para editar cada item */}
 								<ModalRadix
 									isOpen={editModalOpen === item.id}
