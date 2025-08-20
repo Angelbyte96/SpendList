@@ -24,7 +24,12 @@ interface ListArticlesProps {
 	updateQuantity: (itemId: string, newQuantity: number) => void
 }
 
-const ListArticles = ({ listArticles, setArticles, editLogic }: ListArticlesProps) => {
+const ListArticles = ({
+	listArticles,
+	setArticles,
+	editLogic,
+	updateQuantity,
+}: ListArticlesProps) => {
 	const { editCurrentItem, setEditCurrentItem, setEditingItem, logicEditArticle } = editLogic
 	const [editModalOpen, setEditModalOpen] = useState<string | null>(null)
 
@@ -67,8 +72,27 @@ const ListArticles = ({ listArticles, setArticles, editLogic }: ListArticlesProp
 								key={item.id}
 							>
 								<div className="grow">{item.name}</div>
-								<div>${formatPrice(item.price)}</div>
-
+								<div>${formatPrice(item.price * item.quantity)}</div>
+								<select
+									name="quantity"
+									id="quantity"
+									className="rounded-md border dark:border-gray-600 dark:text-white"
+									value={item.quantity}
+									onChange={(e) => {
+										const value = parseInt(e.target.value)
+										updateQuantity(item.id, value)
+									}}
+								>
+									{[...Array(20)].map((_, i) => (
+										<option
+											key={i + 1}
+											value={i + 1}
+											className="rounded border p-1 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+										>
+											{i + 1}
+										</option>
+									))}
+								</select>
 								{/* Modal para editar cada item */}
 								<ModalRadix
 									isOpen={editModalOpen === item.id}
