@@ -21,6 +21,7 @@ interface ListArticlesProps {
 			updateItem: () => void
 		}
 	}
+	updateQuantity: (itemId: string, newQuantity: number) => void
 }
 
 const ListArticles = ({ listArticles, setArticles, editLogic }: ListArticlesProps) => {

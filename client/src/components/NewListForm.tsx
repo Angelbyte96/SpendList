@@ -45,11 +45,16 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	})
 
 	// Estados para modal "Nuevo"
-	const [currentItem, setCurrentItem] = useState<Item>({ id: '', name: '', price: 0 })
+	const [currentItem, setCurrentItem] = useState<Item>({ id: '', name: '', price: 0, quantity: 1 })
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
 	// Estados para modal "Editar"
-	const [editCurrentItem, setEditCurrentItem] = useState<Item>({ id: '', name: '', price: 0 })
+	const [editCurrentItem, setEditCurrentItem] = useState<Item>({
+		id: '',
+		name: '',
+		price: 0,
+		quantity: 1,
+	})
 	const [editingItem, setEditingItem] = useState<Item | null>(null)
 
 	const updateItem = () => {
@@ -81,12 +86,26 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		// Limpiar el estado de edición
 		setEditingItem(null)
-		setEditCurrentItem({ id: '', name: '', price: 0 })
+		setEditCurrentItem({ id: '', name: '', price: 0, quantity: 1 })
+	}
+
+	const updateQuantity = (itemId: string, newQuantity: number) => {
+		setList((prevList) => ({
+			...prevList,
+			items: prevList.items.map((item) =>
+				item.id === itemId ? { ...item, quantity: newQuantity } : item,
+			),
+			total: calculateTotal(
+				prevList.items.map((item) =>
+					item.id === itemId ? { ...item, quantity: newQuantity } : item,
+				),
+			),
+		}))
 	}
 
 	const cancelEdit = () => {
 		setEditingItem(null)
-		setEditCurrentItem({ id: '', name: '', price: 0 })
+		setEditCurrentItem({ id: '', name: '', price: 0, quantity: 1 })
 	}
 
 	// Función para crear una nueva lista
@@ -142,6 +161,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			id: Date.now().toString(), // ✅ Timestamp numérico como string
 			name: currentItem.name,
 			price: currentItem.price,
+			quantity: currentItem.quantity,
 		}
 
 		// ✅ Agregar al principio
@@ -152,7 +172,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		}))
 
 		// Limpiar el campo del artículo actual
-		setCurrentItem({ id: '', name: '', price: 0 })
+		setCurrentItem({ id: '', name: '', price: 0, quantity: 1 })
 		setIsAddModalOpen(false) // ✅ Cerrar modal después de agregar
 
 		ShowToast(`✅ "${newItem.name}" agregado exitosamente.`)
@@ -161,7 +181,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	// Lógica para modal "Nuevo"
 	const logicAddNewArticle = {
 		cancelEdit: () => {
-			setCurrentItem({ id: '', name: '', price: 0 })
+			setCurrentItem({ id: '', name: '', price: 0, quantity: 1 })
 			setIsAddModalOpen(false) // ✅ Cerrar modal al cancelar
 		},
 		addItem,
@@ -173,6 +193,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		cancelEdit,
 		addItem: () => {}, // No usado en modal editar
 		updateItem,
+		updateQuantity,
 	}
 
 	// Objeto con toda la lógica de edición
@@ -249,11 +270,21 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									<h1 className="text-xl md:text-3xl">Cargando items...</h1>
 								</div>
 							) : (
-								<ListArticles listArticles={list} setArticles={setList} editLogic={editLogic} />
+								<ListArticles
+									listArticles={list}
+									setArticles={setList}
+									editLogic={editLogic}
+									updateQuantity={updateQuantity}
+								/>
 							)}
 						</>
 					) : (
-						<ListArticles listArticles={list} setArticles={setList} editLogic={editLogic} />
+						<ListArticles
+							listArticles={list}
+							setArticles={setList}
+							editLogic={editLogic}
+							updateQuantity={updateQuantity}
+						/>
 					)}
 				</div>
 			</main>
