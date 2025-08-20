@@ -76,9 +76,8 @@ const ListArticles = ({
 								<select
 									name="quantity"
 									id="quantity"
-									className="rounded-md border dark:border-gray-600 dark:text-white [&>option]:text-center"
+									className="rounded-md border dark:border-gray-600 dark:text-white"
 									value={item.quantity}
-									dir="ltr"
 									onChange={(e) => {
 										const value = parseInt(e.target.value)
 										updateQuantity(item.id, value)
@@ -89,7 +88,6 @@ const ListArticles = ({
 											key={i + 1}
 											value={i + 1}
 											className="rounded border p-1 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-											style={{ textAlign: 'center' }}
 										>
 											{i + 1}
 										</option>
