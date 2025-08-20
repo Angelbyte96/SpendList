@@ -11,7 +11,7 @@ interface SelectRadixProps {
 const SelectRadix = ({ value, onValueChange }: SelectRadixProps) => (
 	<Select.Root value={value.toString()} onValueChange={(val) => onValueChange(parseInt(val))}>
 		<Select.Trigger
-			className="inline-flex h-[30px] items-center justify-center gap-[3px] rounded-md border bg-[#3d036622] px-[8px] text-[12px] leading-none text-black shadow-[0_2px_10px] shadow-black/10 outline-none transition-all duration-150 hover:bg-[#3d036644] focus:ring-2 focus:ring-purple-500 focus:ring-offset-1 focus:ring-offset-white dark:border-[#393939] dark:text-white dark:focus:ring-purple-400 dark:focus:ring-offset-[#101421]"
+			className="inline-flex h-[25px] items-center justify-center gap-[3px] rounded-md border bg-[#3d036622] px-[6px] text-[12px] leading-none text-black shadow-[0_2px_10px] shadow-black/10 outline-none transition-all duration-150 hover:bg-[#3d036644] focus:ring-2 focus:ring-purple-500 focus:ring-offset-1 focus:ring-offset-white dark:border-[#393939] dark:text-white dark:focus:ring-purple-400 dark:focus:ring-offset-[#101421]"
 			aria-label="quantity"
 		>
 			<Select.Value placeholder="Piezas" />
@@ -24,7 +24,7 @@ const SelectRadix = ({ value, onValueChange }: SelectRadixProps) => (
 				<Select.ScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-white/50 backdrop-blur-sm text-gray-600 dark:bg-[#101421]/60 dark:backdrop-blur-sm dark:text-gray-300">
 					<ChevronUpIcon />
 				</Select.ScrollUpButton>
-				<Select.Viewport className="w-fit p-[5px]">
+				<Select.Viewport className="w-fit p-[4px]">
 					<Select.Group>
 						<Select.Label className="flex justify-center px-[8px] py-[2px] text-[10px] leading-[14px] text-purple-700 font-medium dark:text-purple-300">
 							Cantidad
