@@ -71,6 +71,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 							<ul className="flex w-full flex-col gap-4">
 								{lists.map((list) => {
 									const numItems = list.items.length
+									const totalPieces = list.items.reduce((total, item) => total + item.quantity, 0)
 									const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
 									const isExpanded = expandedLists.has(list.id)
 									const shouldShowExpand = numItems > 3
@@ -131,15 +132,33 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 													</span>
 													<span>{formattedDate}</span>
 												</div>
-												<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
-													{numItems === 1 ? `${numItems} articulo` : `${numItems} articulos`}
-												</span>
+												<div className='flex gap-1 md:flex-row md:gap-2'>
+													{numItems !== totalPieces ? (
+														<>
+															<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.2rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
+																{numItems === 1 ? `${numItems} art` : `${numItems} arts`}
+															</span>
+															<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
+																{totalPieces === 1
+																	? `${totalPieces} pz`
+																	: `${totalPieces} pzs`}
+															</span>
+														</>
+													) : (
+														<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
+															{numItems === 1 ? `${numItems} articulo` : `${numItems} articulos`}
+														</span>
+													)}
+												</div>
 											</div>
 											<div className="flex flex-col gap-2">
 												{itemsToShow.map((item) => (
 													<div key={item.id} className="flex items-center justify-between">
-														<span>{item.name}</span>
-														<span>${formatPrice(item.price)}</span>
+														<div className="flex gap-2">
+															<span>{item.name}</span>
+															<span>x{item.quantity}</span>
+														</div>
+														<span>${formatPrice(item.price * item.quantity)}</span>
 													</div>
 												))}
 												{shouldShowExpand && (
