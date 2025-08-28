@@ -7,7 +7,7 @@ import { calculateTotal } from '@/logic/calculateTotal'
 import { formatPrice } from '@/utils/formatPrice'
 import { ShowToast } from '@/utils/ShowToast'
 import { Edit3, Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
 
 interface NewListFormProps {
@@ -16,6 +16,8 @@ interface NewListFormProps {
 
 const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const [loading, setLoading] = useState<boolean>(true)
+	const [isNameConfirmed, setIsNameConfirmed] = useState<string | null>('')
+	const inputNameList = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
 		setLoading(true)
@@ -37,6 +39,10 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			setLoading(false)
 		}
 	}, [editingListId])
+
+	useEffect(() => {
+		if (inputNameList.current) inputNameList.current.focus()
+	}, [isNameConfirmed])
 
 	const [list, setList] = useState<Omit<List, 'id' | 'createdAt'>>({
 		name: '',
@@ -223,21 +229,56 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			<main className="flex flex-col gap-4 overflow-y-auto p-4">
 				<form
 					action=""
-					className="flex items-center justify-center gap-4 rounded-xl border border-gray-200/50 bg-white/30 px-2 shadow-sm backdrop-blur transition-colors dark:border-gray-700/50 dark:bg-gray-900/60 dark:shadow-none"
+					onSubmit={(e) => {
+						e.preventDefault()
+					}}
+					className="flex items-center justify-center gap-4 rounded-xl border border-gray-200/50 bg-white/30 p-2 px-2 shadow-sm backdrop-blur transition-colors dark:border-gray-700/50 dark:bg-gray-900/60 dark:shadow-none"
 				>
-					<div className="flex flex-1 items-center gap-1 rounded-xl p-2 md:gap-2 md:p-4">
-						<input
-							type="text"
-							name="nameList"
-							id="nameList"
-							placeholder="Nombre de la lista"
-							className="flex-1 rounded-lg border border-gray-400/50 p-1.5 placeholder:text-black/40 dark:placeholder:text-white/40"
-							value={list.name}
-							onChange={(e) => setList({ ...list, name: e.target.value })}
-						/>
-						<button className="hidden cursor-pointer rounded-md border bg-[#3d036622] p-1 text-white dark:border-[#393939]">
-							<Edit3 className="m-1 h-4 w-4" />
-						</button>
+					<div className="flex flex-1 items-center gap-2 rounded-xl md:gap-2 md:p-4">
+						{!isNameConfirmed ? (
+							<>
+								<input
+									type="text"
+									name="nameList"
+									id="nameList"
+									placeholder="Nombre de la lista"
+									className="flex-1 rounded-lg border border-gray-400/50 p-1.5 placeholder:text-black/40 dark:placeholder:text-white/40"
+									value={list.name}
+									onChange={(e) => {
+										setList({ ...list, name: e.target.value })
+									}}
+									onBlur={() => {
+										setIsNameConfirmed(list.name)
+									}}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter') setIsNameConfirmed(list.name)
+									}}
+									ref={inputNameList}
+								/>
+								{/* <button
+									className="cursor-pointer"
+									onClick={(e) => {
+										e.preventDefault()
+										setIsNameConfirmed(list.name)
+									}}
+								>
+									<Check className="rounded-md border border-green-900 bg-[#00823642]" />
+								</button> */}
+							</>
+						) : (
+							<>
+								<p className="font-bold">{list.name}</p>
+								<button
+									className="cursor-pointer rounded-md border bg-blue-100/30 p-1 text-white transition hover:bg-blue-200/50 dark:border-[#393939] dark:bg-blue-900/30 dark:hover:bg-blue-800/50"
+									onClick={(e) => {
+										e.preventDefault()
+										setIsNameConfirmed('')
+									}}
+								>
+									<Edit3 className="text-blue-400 dark:text-blue-300" height={16} width={16} />
+								</button>
+							</>
+						)}
 					</div>
 					<ModalRadix
 						isOpen={isAddModalOpen}
