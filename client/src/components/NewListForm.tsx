@@ -261,15 +261,6 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									}}
 									ref={inputNameList}
 								/>
-								{/* <button
-									className="cursor-pointer"
-									onClick={(e) => {
-										e.preventDefault()
-										setIsNameConfirmed(list.name)
-									}}
-								>
-									<Check className="rounded-md border border-green-900 bg-[#00823642]" />
-								</button> */}
 							</>
 						) : (
 							<>
