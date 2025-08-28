@@ -248,10 +248,16 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 										setList({ ...list, name: e.target.value })
 									}}
 									onBlur={() => {
-										setIsNameConfirmed(list.name)
+										const trimmedName = list.name.trim()
+										setIsNameConfirmed(trimmedName)
+										setList({ ...list, name: trimmedName })
 									}}
 									onKeyDown={(e) => {
-										if (e.key === 'Enter') setIsNameConfirmed(list.name)
+										if (e.key === 'Enter') {
+											const trimmedName = list.name.trim()
+											setIsNameConfirmed(trimmedName)
+											setList({ ...list, name: trimmedName })
+										}
 									}}
 									ref={inputNameList}
 								/>
