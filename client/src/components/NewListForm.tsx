@@ -268,7 +268,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							<>
 								<p className="font-bold">{list.name}</p>
 								<button
-									className="cursor-pointer rounded-md border bg-blue-100/30 p-1 text-white transition hover:bg-blue-200/50 dark:border-[#393939] dark:bg-blue-900/30 dark:hover:bg-blue-800/50"
+									className="cursor-pointer rounded-md border border-blue-200/80 bg-blue-100/30 p-1 text-white transition hover:bg-blue-200/50 dark:border-blue-700/50 dark:bg-blue-900/30 dark:hover:bg-blue-800/50"
 									onClick={(e) => {
 										e.preventDefault()
 										setIsNameConfirmed(false)
