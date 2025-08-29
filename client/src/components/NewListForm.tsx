@@ -16,8 +16,12 @@ interface NewListFormProps {
 
 const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const [loading, setLoading] = useState<boolean>(true)
-	const [isNameConfirmed, setIsNameConfirmed] = useState<string | null>('')
+	const [isNameConfirmed, setIsNameConfirmed] = useState<boolean>(false)
 	const inputNameList = useRef<HTMLInputElement>(null)
+
+	useEffect(() => {
+		if (!isNameConfirmed && inputNameList.current) inputNameList.current.focus()
+	}, [isNameConfirmed])
 
 	useEffect(() => {
 		setLoading(true)
@@ -25,12 +29,14 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		try {
 			if (editingListId) {
 				const existingList = getList(editingListId)
+
 				if (existingList) {
 					setList({
 						name: existingList.name,
 						items: existingList.items,
 						total: existingList.total,
 					})
+					setIsNameConfirmed(true) // ← ¿Falta esto?
 				}
 			}
 		} catch (error) {
@@ -39,10 +45,6 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			setLoading(false)
 		}
 	}, [editingListId])
-
-	useEffect(() => {
-		if (inputNameList.current) inputNameList.current.focus()
-	}, [isNameConfirmed])
 
 	const [list, setList] = useState<Omit<List, 'id' | 'createdAt'>>({
 		name: '',
@@ -249,13 +251,13 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									}}
 									onBlur={() => {
 										const trimmedName = list.name.trim()
-										setIsNameConfirmed(trimmedName)
+										setIsNameConfirmed(true)
 										setList({ ...list, name: trimmedName })
 									}}
 									onKeyDown={(e) => {
 										if (e.key === 'Enter') {
 											const trimmedName = list.name.trim()
-											setIsNameConfirmed(trimmedName)
+											setIsNameConfirmed(true)
 											setList({ ...list, name: trimmedName })
 										}
 									}}
@@ -269,7 +271,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 									className="cursor-pointer rounded-md border bg-blue-100/30 p-1 text-white transition hover:bg-blue-200/50 dark:border-[#393939] dark:bg-blue-900/30 dark:hover:bg-blue-800/50"
 									onClick={(e) => {
 										e.preventDefault()
-										setIsNameConfirmed('')
+										setIsNameConfirmed(false)
 									}}
 								>
 									<Edit3 className="text-blue-400 dark:text-blue-300" height={16} width={16} />
