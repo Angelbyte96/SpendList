@@ -1,17 +1,4 @@
-export interface Item {
-	id: string
-	name: string
-	price: number
-	quantity: number
-}
-
-export interface List {
-	id: string
-	name: string
-	items: Item[]
-	total: number
-	createdAt: string
-}
+import type { List } from '@/models/list.model'
 
 export const getLists = (): List[] => {
 	const lists = localStorage.getItem('lists')
