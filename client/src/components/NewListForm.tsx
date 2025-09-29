@@ -7,6 +7,7 @@ import type { Item } from '@/models/item.model'
 import type { List } from '@/models/list.model'
 import { formatPrice } from '@/utils/formatPrice'
 import { ShowToast } from '@/utils/ShowToast'
+import { navigate } from 'astro/virtual-modules/transitions-router.js'
 import { Edit3, Plus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { ButtonBack } from './ButtonBack'
@@ -37,7 +38,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 						items: existingList.items,
 						total: existingList.total,
 					})
-					setIsNameConfirmed(true) // ← ¿Falta esto?
+					setIsNameConfirmed(true)
 				}
 			}
 		} catch (error) {
@@ -154,6 +155,7 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 		// Redireccionar a demo
 		setTimeout(() => {
 			window.location.href = '/demo'
+			navigate('/demo')
 		}, 2000)
 	}
 
@@ -267,12 +269,17 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 							</>
 						) : (
 							<>
-								<p className={`${list.name === 'Coloca el nombre de tu lista' ? 'text-red-700 animate-pulse' : 'text-black'} font-bold text-sm md:text-base`}>{list.name}</p>
+								<p
+									className={`${list.name === 'Coloca el nombre de tu lista' ? 'animate-pulse text-red-700' : 'text-black'} text-sm font-bold md:text-base`}
+								>
+									{list.name}
+								</p>
 								<button
 									className="cursor-pointer rounded-md border border-blue-200/80 bg-blue-100/30 p-1 text-white transition hover:bg-blue-200/50 dark:border-blue-700/50 dark:bg-blue-900/30 dark:hover:bg-blue-800/50"
 									onClick={(e) => {
 										e.preventDefault()
 										setIsNameConfirmed(false)
+										if (list.name === 'Coloca el nombre de tu lista') setList({ ...list, name: '' })
 									}}
 								>
 									<Edit3 className="text-blue-400 dark:text-blue-300" height={16} width={16} />
