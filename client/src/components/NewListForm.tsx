@@ -18,7 +18,7 @@ interface NewListFormProps {
 
 const NewListForm = ({ editingListId }: NewListFormProps) => {
 	const [loading, setLoading] = useState<boolean>(true)
-	const [isNameConfirmed, setIsNameConfirmed] = useState<boolean>(false)
+	const [isNameConfirmed, setIsNameConfirmed] = useState<boolean>(true)
 	const inputNameList = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
