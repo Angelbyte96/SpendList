@@ -1,55 +1,90 @@
+import type { CreateListDto, ListResponseDto, ListSummaryDto, UpdateListDto } from '@/dtos/list.dto'
+import { ListMapper } from '@/mappers/list.mapper'
 import type { List } from '@/models/list.model'
 
-export const getLists = (): List[] => {
-	const lists = localStorage.getItem('lists')
-	return lists ? JSON.parse(lists) : []
-}
-
-export const saveList = (list: Omit<List, 'id' | 'createdAt'>): List | null => {
-	const lists = getLists()
-
-	// Verificar si ya existe una lista con el mismo nombre
-	// const existingList = lists.find((item) => item.name.toLowerCase() === list.name.toLowerCase())
-
-	// if (existingList) {
-	// 	alert('Ya existe una lista con ese nombre. Por favor, elige otro nombre.')
-	// 	return null
-	// }
-
-	const newList: List = {
-		...list,
-		id: crypto.randomUUID(),
-		createdAt: new Date().toISOString(),
+export class ListService {
+	static getAll(): ListResponseDto[] {
+		const lists = this.getAllRaw()
+		return lists.map((list) => ListMapper.toResponseDto(list))
 	}
 
-	localStorage.setItem('lists', JSON.stringify([...lists, newList]))
-	return newList
-}
+	static getAllSummary(): ListSummaryDto[] {
+		const lists = this.getAllRaw()
+		return lists.map((list) => ListMapper.toSummaryDto(list))
+	}
 
-export const updateList = (id: string, updateList: Partial<List>): List | null => {
-	const lists = getLists()
-	const index = lists.findIndex((list) => list.id === id)
+	static getById(id: string): ListResponseDto | null {
+		const list = this.getByIdRaw(id)
+		return list ? ListMapper.toResponseDto(list) : null
+	}
 
-	if (index === -1) return null
+	static create(dto: CreateListDto): ListResponseDto {
+		const lists = this.getAllRaw()
 
-	const updated = { ...lists[index], ...updateList }
-	lists[index] = updated
+		const newList: List = {
+			id: crypto.randomUUID(),
+			name: dto.name,
+			items: dto.items.map((item) => ({
+				id: crypto.randomUUID(),
+				name: item.name,
+				price: item.price,
+				quantity: item.quantity,
+			})),
+			total: dto.items.reduce((total, item) => total + item.price * item.quantity, 0),
+			createdAt: new Date().toISOString(),
+		}
 
-	localStorage.setItem('lists', JSON.stringify(lists))
-	return updated
-}
+		localStorage.setItem('lists', JSON.stringify([...lists, newList]))
+		return ListMapper.toResponseDto(newList)
+	}
 
-export const deleteList = (id: string): boolean => {
-	const lists = getLists()
-	const filteredLists = lists.filter((list) => list.id !== id)
+	static update(dto: UpdateListDto): ListResponseDto | null {
+		const lists = this.getAllRaw()
+		const index = lists.findIndex((list) => list.id === dto.id)
 
-	if (filteredLists.length === lists.length) return false
+		if (index === -1) return null
 
-	localStorage.setItem('lists', JSON.stringify(filteredLists))
-	return true
-}
+		const existingList = lists[index]
 
-export const getList = (id: string): List | null => {
-	const lists = getLists()
-	return lists.find((list) => list.id === id) || null
+		const updatedList: List = {
+			...existingList,
+			name: dto.name ?? existingList.name,
+			items: dto.items
+				? dto.items.map((item) => ({
+						id: item.id,
+						name: item.name ?? '',
+						price: item.price ?? 0,
+						quantity: item.quantity ?? 1,
+					}))
+				: existingList.items,
+			total: dto.items
+				? dto.items.reduce((total, item) => total + (item.price ?? 0) * (item.quantity ?? 1), 0)
+				: existingList.total,
+		}
+
+		lists[index] = updatedList
+		localStorage.setItem('lists', JSON.stringify(lists))
+		return ListMapper.toResponseDto(updatedList)
+	}
+
+	static delete(id: string): boolean {
+		const lists = this.getAllRaw()
+		const filteredLists = lists.filter((list) => list.id !== id)
+
+		if (filteredLists.length === lists.length) return false
+
+		localStorage.setItem('lists', JSON.stringify(filteredLists))
+		return true
+	}
+
+	// Métodos privados de acceso a localStorage
+	private static getAllRaw(): List[] {
+		const lists = localStorage.getItem('lists')
+		return lists ? JSON.parse(lists) : []
+	}
+
+	private static getByIdRaw(id: string): List | null {
+		const lists = this.getAllRaw()
+		return lists.find((list) => list.id === id) || null
+	}
 }
