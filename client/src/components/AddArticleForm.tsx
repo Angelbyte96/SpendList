@@ -1,4 +1,4 @@
-import type { Item } from '@/lib/localStorageService'
+import type { Item } from '@/models/item.model'
 import { Plus } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -8,11 +8,7 @@ interface AddArticleFormProps {
 	onAdd: () => void
 }
 
-const AddArticleForm = ({
-	currentItem,
-	setCurrentItem,
-	onAdd,
-}: AddArticleFormProps) => {
+const AddArticleForm = ({ currentItem, setCurrentItem, onAdd }: AddArticleFormProps) => {
 	return (
 		<div className="flex flex-col gap-1 rounded-xl p-2 md:gap-2 md:p-4">
 			<div className="flex w-full flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -54,3 +50,4 @@ const AddArticleForm = ({
 }
 
 export { AddArticleForm }
+

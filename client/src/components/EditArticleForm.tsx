@@ -1,4 +1,4 @@
-import type { Item } from '@/lib/localStorageService'
+import type { Item } from '@/models/item.model'
 import { Save } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 

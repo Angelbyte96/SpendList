@@ -1,6 +1,7 @@
 import { SelectRadix } from '@/components/SelectRadix'
-import type { Item, List } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
+import type { Item } from '@/models/item.model'
+import type { List } from '@/models/list.model'
 import { formatPrice } from '@/utils/formatPrice'
 import { SquarePen, Trash2 } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
@@ -74,7 +75,7 @@ const ListArticles = ({
 							>
 								<div className="grow">{item.name}</div>
 								<div>${formatPrice(item.price * item.quantity)}</div>
-								<SelectRadix 
+								<SelectRadix
 									value={item.quantity}
 									onValueChange={(value) => updateQuantity(item.id, value)}
 								/>
