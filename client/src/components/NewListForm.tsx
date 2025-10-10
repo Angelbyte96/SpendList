@@ -1,7 +1,8 @@
 import { AddArticleForm } from '@/components/AddArticleForm'
 import { ModalRadix } from '@/components/DialogTemplate'
 import { ListArticles } from '@/components/ListArticles'
-import { getList, saveList, updateList } from '@/lib/localStorageService'
+import type { CreateListDto, UpdateListDto } from '@/dtos/list.dto'
+import { ListService } from '@/lib/localStorageService'
 import { calculateTotal } from '@/logic/calculateTotal'
 import type { Item } from '@/models/item.model'
 import type { List } from '@/models/list.model'
@@ -30,13 +31,18 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 
 		try {
 			if (editingListId) {
-				const existingList = getList(editingListId)
+				const listDto = ListService.getById(editingListId)
 
-				if (existingList) {
+				if (listDto) {
 					setList({
-						name: existingList.name,
-						items: existingList.items,
-						total: existingList.total,
+						name: listDto.name,
+						items: listDto.items.map((item) => ({
+							id: item.id,
+							name: item.name,
+							price: item.price,
+							quantity: item.quantity,
+						})),
+						total: listDto.total,
 					})
 					setIsNameConfirmed(true)
 				}
@@ -55,7 +61,12 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 	})
 
 	// Estados para modal "Nuevo"
-	const [currentItem, setCurrentItem] = useState<Item>({ id: '', name: '', price: 0, quantity: 1 })
+	const [currentItem, setCurrentItem] = useState<Item>({
+		id: crypto.randomUUID(),
+		name: '',
+		price: 0,
+		quantity: 1,
+	})
 	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
 	// Estados para modal "Editar"
@@ -132,20 +143,31 @@ const NewListForm = ({ editingListId }: NewListFormProps) => {
 			return
 		}
 
-		const newList: Omit<List, 'id' | 'createdAt'> = {
-			name: list.name,
-			items: list.items,
-			total: list.total,
-		}
-
 		// Guardar la lista en el almacenamiento local
-		// if (saveList(newList) === null) return
 
 		if (editingListId) {
-			updateList(editingListId, newList)
+			const dto: UpdateListDto = {
+				id: editingListId,
+				name: list.name,
+				items: list.items.map((item) => ({
+					id: item.id,
+					name: item.name,
+					price: item.price,
+					quantity: item.quantity,
+				})),
+			}
+			ListService.update(dto)
 			ShowToast('🎉 Lista editada exitosamente.')
 		} else {
-			saveList(newList)
+			const dto: CreateListDto = {
+				name: list.name,
+				items: list.items.map((item) => ({
+					name: item.name,
+					price: item.price,
+					quantity: item.quantity,
+				})),
+			}
+			ListService.create(dto)
 			ShowToast('🎉 Lista creada exitosamente.')
 		}
 

@@ -12,7 +12,7 @@ export interface UpdateItemDto {
 }
 
 export interface ItemResponseDto {
-	id: string
+	readonly id: string
 	name: string
 	price: number
 	quantity: number

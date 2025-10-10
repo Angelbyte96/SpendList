@@ -12,21 +12,21 @@ export interface UpdateListDto {
 }
 
 export interface ListResponseDto {
-	id: string
+	readonly id: string
 	name: string
 	items: ItemResponseDto[]
 	total: number
 	totalItems: number
 	totalPieces: number
-	createdAt: string
+	readonly createdAt: string
 	updatedAt?: string
 }
 
 export interface ListSummaryDto {
-	id: string
+	readonly id: string
 	name: string
 	totalItems: number
 	totalPieces: number
 	total: number
-	createdAt: string
+	readonly createdAt: string
 }
