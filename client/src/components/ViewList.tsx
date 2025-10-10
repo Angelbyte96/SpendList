@@ -1,6 +1,7 @@
 import { ButtonBack } from '@/components/ButtonBack'
 import { ModalRadix } from '@/components/DialogTemplate'
-import { deleteList, getLists, type List } from '@/lib/localStorageService'
+import type { ListResponseDto } from '@/dtos/list.dto'
+import { ListService } from '@/lib/localStorageService'
 import { formatPrice } from '@/utils/formatPrice'
 import { format } from '@formkit/tempo'
 import { Calendar, ChevronDown, ChevronUp, SquarePen, Trash2 } from 'lucide-react'
@@ -11,20 +12,20 @@ interface ViewListProps {
 }
 
 const ViewList = ({ onEditingListId }: ViewListProps) => {
-	const [lists, setLists] = useState<List[]>([])
+	const [lists, setLists] = useState<ListResponseDto[]>([])
 	const [expandedLists, setExpandedLists] = useState<Set<string>>(new Set())
 	const [loading, setLoading] = useState<boolean>(true)
 	const [openId, setOpenId] = useState<string | null>(null)
 
-	function sortedLists() {
-		return getLists().sort(
-			(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-		)
-	}
 	useEffect(() => {
 		setLoading(true)
 
 		try {
+			const listDto = ListService.getAll()
+			const sortedLists = listDto.sort(
+				(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+			)
+
 			setLists(sortedLists)
 		} catch (error) {
 			console.error('Error al cargar las listas:', error)
@@ -44,6 +45,13 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 			}
 			return newSet
 		})
+	}
+
+	const handleDelete = (id: string) => {
+		if (ListService.delete(id)) {
+			setLists((prev) => prev.filter((list) => list.id !== id)) // Filtra la lista eliminada
+			setOpenId(null) // Cierra el modal
+		}
 	}
 
 	return (
@@ -70,14 +78,11 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 							</div>
 							<ul className="flex w-full flex-col gap-4">
 								{lists.map((list) => {
-									const numItems = list.items.length
-									const totalPieces = list.items.reduce((total, item) => total + item.quantity, 0)
 									const formattedDate = format(list.createdAt, 'D MMMM YYYY, h:mm a', 'es')
 									const isExpanded = expandedLists.has(list.id)
-									const shouldShowExpand = numItems > 3
-									const sortedItems = list.items.sort((a, b) => b.id.localeCompare(a.id))
+									const shouldShowExpand = list.totalItems > 3
 									const itemsToShow =
-										shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : sortedItems
+										shouldShowExpand && !isExpanded ? list.items.slice(0, 3) : list.items
 
 									return (
 										<li
@@ -112,11 +117,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 																❌ Cancelar
 															</button>
 															<button
-																onClick={() =>
-																	deleteList(list.id) &&
-																	setLists(sortedLists()) &&
-																	setOpenId(openId === list.id ? null : list.id)
-																}
+																onClick={() => handleDelete(list.id)}
 																className="focus:ring-opacity-30 cursor-pointer self-end rounded-lg bg-red-700 px-2.5 py-[0.2rem] text-sm font-semibold text-white transition hover:scale-105 focus:ring-2 focus:ring-blue-200 focus:outline-none"
 															>
 																🗑️ Eliminar
@@ -132,21 +133,25 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 													</span>
 													<span>{formattedDate}</span>
 												</div>
-												<div className='flex gap-1 md:flex-row md:gap-2'>
-													{numItems !== totalPieces ? (
+												<div className="flex gap-1 md:flex-row md:gap-2">
+													{list.totalItems !== list.totalPieces ? (
 														<>
 															<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.2rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
-																{numItems === 1 ? `${numItems} art` : `${numItems} arts`}
+																{list.totalItems === 1
+																	? `${list.totalItems} art`
+																	: `${list.totalItems} arts`}
 															</span>
 															<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
-																{totalPieces === 1
-																	? `${totalPieces} pz`
-																	: `${totalPieces} pzs`}
+																{list.totalPieces === 1
+																	? `${list.totalPieces} pz`
+																	: `${list.totalPieces} pzs`}
 															</span>
 														</>
 													) : (
 														<span className="rounded-lg border border-purple-300/50 bg-purple-200 px-[0.4rem] py-[0.2rem] text-xs dark:border-[#232447] dark:bg-[#1f2937]">
-															{numItems === 1 ? `${numItems} articulo` : `${numItems} articulos`}
+															{list.totalItems === 1
+																? `${list.totalItems} articulo`
+																: `${list.totalItems} articulos`}
 														</span>
 													)}
 												</div>
@@ -158,7 +163,7 @@ const ViewList = ({ onEditingListId }: ViewListProps) => {
 															<span>{item.name}</span>
 															<span>x{item.quantity}</span>
 														</div>
-														<span>${formatPrice(item.price * item.quantity)}</span>
+														<span>${formatPrice(item.totalPrice)}</span>
 													</div>
 												))}
 												{shouldShowExpand && (
