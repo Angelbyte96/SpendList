@@ -6,16 +6,17 @@ import tailwindcss from '@tailwindcss/vite'
 
 import db from '@astrojs/db'
 
-import vercel from '@astrojs/vercel';
+import vercel from '@astrojs/vercel'
+import clerk from '@clerk/astro'
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  integrations: [react(), db()],
+	output: 'server',
+	integrations: [react(), db(), clerk()],
 
-  vite: {
-      plugins: [tailwindcss()],
+	vite: {
+		plugins: [tailwindcss()],
 	},
 
-  adapter: vercel(),
+	adapter: vercel(),
 })
