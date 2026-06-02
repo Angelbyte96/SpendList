@@ -6,3 +6,16 @@ allowBuilds:
 
 overrides:
   path-to-regexp: "^6.3.0"
+  glob: "^10.5.0"
+  tar: ">=7.5.11"
+  rollup: ">=4.59.0"
+  flatted: ">=3.4.2"
+  vite: ">=6.4.2"
+  picomatch: ">=2.3.2 <4 || >=4.0.4"
+  minimatch: ">=3.1.4 <9 || >=9.0.7"
+  js-yaml: ">=4.1.1"
+  mdast-util-to-hast: ">=13.2.1"
+  ajv: ">=6.14.0"
+  yaml: ">=2.8.3"
+  postcss: ">=8.5.10"
+  ws: ">=8.20.1"
