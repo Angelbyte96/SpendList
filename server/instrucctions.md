@@ -53,3 +53,20 @@ de avanzar a la siguiente.
 - El código lo escribe el usuario. Claude actúa como coach: guía y responde
   dudas puntuales cuando el usuario se traba, no implementa por adelantado.
 - No avanzar de fase sin el checkpoint de la anterior verificado.
+
+## Foco de cada fase (para repasar antes de continuar)
+
+| Fase | Tema principal |
+|---|---|
+| 0 — Esqueleto | Express puro (setup, rutas básicas) |
+| 1 — Conexión a Turso | Cliente libSQL + env vars (dotenv) — casi nada de Express |
+| 2 — Schema propio | SQL puro (diseño de tablas) — cero Express |
+| 3 — Registro | Express (rutas, body) + bcrypt/hashing (seguridad) |
+| 4 — Login | Express + JWT (auth stateless) — la fase más conceptual |
+| 5 — Middleware de auth | Express (patrón de middleware) + verificación de JWT |
+| 6 — CRUD de Lists/Items | Express aplicado (rutas CRUD) + SQL |
+| 7 — Endurecer | Express (middleware de error) + JWT opcional (refresh/logout) |
+
+Para repasar antes de retomar: Express puro en fases 0, 5 y 7; SQL/DB en
+fases 1 y 2; JWT/auth stateless en la fase 4 (payload, por qué el password
+nunca viaja, firma/verificación).
