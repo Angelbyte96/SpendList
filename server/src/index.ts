@@ -1,24 +1,22 @@
-process.loadEnvFile();
-
-import { createClient } from "@libsql/client";
 import express from "express";
-
-const tursoURL = process.env.TURSO_DATABASE_URL;
-const tursoAuthToken = process.env.TURSO_AUTH_TOKEN;
-if (!tursoURL) throw new Error("Es necesaria la url de turso");
-if (!tursoAuthToken) throw new Error("Es necesario el auth token de Turso");
+import { tursoClient } from "./db/client";
 
 const PORT = process.env.PORT ?? 4010;
-
-const tursoClient = createClient({
-	url: tursoURL,
-	authToken: tursoAuthToken,
-});
 
 const app = express();
 
 app.get("/health", (req, res) => {
 	return res.json({ status: "ok", uptime: process.uptime() });
+});
+
+app.get("/db-check", async (req, res) => {
+	try {
+		const data = await tursoClient.execute("SELECT 1");
+		res.json(data);
+	} catch (e) {
+		const message = e instanceof Error ? e.message : "Error desconocido";
+		res.status(503).json({ error: message });
+	}
 });
 
 if (process.env.NODE_ENV !== "production") {
