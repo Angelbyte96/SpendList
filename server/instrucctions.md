@@ -16,7 +16,8 @@ de avanzar a la siguiente.
 
 ## Fase 1 — Conexión a Turso
 - Cliente `@libsql/client` (versión node, no `/web`).
-- Variables de entorno con `dotenv`.
+- Variables de entorno con `process.loadEnvFile()` (nativo de Node, sin
+  `dotenv` — Node local es v22.22.2, la API es estable desde v20.10.0).
 - Ruta de prueba `GET /db-check` con un `SELECT 1`.
 - Checkpoint: no avanzar sin verificar la conexión.
 
@@ -59,7 +60,7 @@ de avanzar a la siguiente.
 | Fase | Tema principal |
 |---|---|
 | 0 — Esqueleto | Express puro (setup, rutas básicas) |
-| 1 — Conexión a Turso | Cliente libSQL + env vars (dotenv) — casi nada de Express |
+| 1 — Conexión a Turso | Cliente libSQL + env vars (nativas de Node) — casi nada de Express |
 | 2 — Schema propio | SQL puro (diseño de tablas) — cero Express |
 | 3 — Registro | Express (rutas, body) + bcrypt/hashing (seguridad) |
 | 4 — Login | Express + JWT (auth stateless) — la fase más conceptual |
