@@ -1,9 +1,13 @@
 import express from "express";
 import { tursoClient } from "./db/client";
+import router from "./routes/auth.routes";
 
 const PORT = process.env.PORT ?? 4010;
 
 const app = express();
+app.use(express.json());
+
+app.use("/auth", router);
 
 app.get("/health", (req, res) => {
 	return res.json({ status: "ok", uptime: process.uptime() });
